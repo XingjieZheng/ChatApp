@@ -13,9 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.xingjiezheng.chatapp.util.LogUtils;
+import com.xingjiezheng.chatapp.util.SnackbarUtils;
+import com.xingjiezheng.chatapp.util.ToastUtils;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String TAG = LogUtils.makeLogTag(MainActivity.class);
+    private View rootView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +46,19 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        rootView = findViewById(R.id.rootView);
     }
 
     @Override
     public void onBackPressed() {
+
+//        String massage = "click back!";
+//        ToastUtils.show(this, massage);
+//        LogUtils.LOGI(TAG, massage);
+//        SnackbarUtils.show(rootView, massage, getResources().getDrawable(R.drawable.ic_menu_slideshow));
+//        return;
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
