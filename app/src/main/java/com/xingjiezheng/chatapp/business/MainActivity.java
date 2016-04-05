@@ -1,4 +1,4 @@
-package com.xingjiezheng.chatapp;
+package com.xingjiezheng.chatapp.business;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.util.LogUtils;
-import com.xingjiezheng.chatapp.util.SnackbarUtils;
-import com.xingjiezheng.chatapp.util.ToastUtils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
