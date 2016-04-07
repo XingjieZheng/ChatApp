@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.xingjiezheng.chatapp.business.ui.LoginActivity">
+    tools:context=".business.account.login.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -35,11 +35,11 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/email"
+                    android:id="@+id/account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
+                    android:hint="@string/prompt_account"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />
 
