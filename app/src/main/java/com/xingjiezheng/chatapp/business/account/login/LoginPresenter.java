@@ -1,24 +1,29 @@
 package com.xingjiezheng.chatapp.business.account.login;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by XingjieZheng
  * on 2016/4/7.
  */
-public class LoginPresenter {
+public class LoginPresenter implements LoginContract.Presenter {
 
     private static final String TAG = LogUtils.makeLogTag(LoginPresenter.class);
 
-    private ILoginView loginView;
+    private LoginContract.View loginView;
 
-    public LoginPresenter(ILoginView loginView) {
-        this.loginView = loginView;
+    public LoginPresenter(@NonNull LoginContract.View loginView) {
+        this.loginView = checkNotNull(loginView, "loginView cannot be null!");
+        loginView.setPresenter(this);
     }
 
+    @Override
     public void login() {
         LogUtils.LOGI(TAG, "attemptLogin");
 
@@ -65,12 +70,18 @@ public class LoginPresenter {
         }
     }
 
-    private boolean isEmailValid(String email) {
+    @Override
+    public boolean isEmailValid(String email) {
         return email.contains("1");
     }
 
-    private boolean isPasswordValid(String password) {
+    @Override
+    public boolean isPasswordValid(String password) {
         return !TextUtils.isEmpty(password) && password.length() > 4;
     }
 
+    @Override
+    public void start() {
+
+    }
 }

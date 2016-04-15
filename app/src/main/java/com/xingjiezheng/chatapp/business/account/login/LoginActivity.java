@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements ILoginView {
+public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
 
     private final String TAG = LogUtils.makeLogTag(LoginActivity.class);
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Bind(R.id.email_sign_in_button)
     Button mEmailSignInButton;
 
-    private LoginPresenter loginPresenter;
+    private LoginContract.Presenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +179,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @Override
     public void requestPasswordEditView() {
         mPasswordView.requestFocus();
+    }
+
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        loginPresenter = presenter;
     }
 }
 
