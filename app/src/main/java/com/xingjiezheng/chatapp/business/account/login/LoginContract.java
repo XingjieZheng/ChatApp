@@ -29,6 +29,8 @@ public interface LoginContract {
         void requestFocusAccountEditView();
 
         void requestPasswordEditView();
+
+        void showLoginMessage(String message);
     }
 
     interface Presenter extends BasePresenter {

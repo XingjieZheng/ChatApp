@@ -2,12 +2,9 @@ package com.xingjiezheng.chatapp.business.account.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingjiezheng.chatapp.R;
+import com.xingjiezheng.chatapp.framework.BaseActivity;
 import com.xingjiezheng.chatapp.util.LogUtils;
+import com.xingjiezheng.chatapp.util.SnackbarUtils;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
 
     private final String TAG = LogUtils.makeLogTag(LoginActivity.class);
@@ -53,6 +52,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         setContentView(R.layout.activity_login);
         init();
         setListeners();
+
+        // TODO: 2016/5/16
+        setTestParams();
+    }
+
+    private void setTestParams() {
+        mAccountView.setText("13713709078");
+        mPasswordView.setText("844733477");
     }
 
     private void init() {
@@ -87,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -179,6 +185,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void requestPasswordEditView() {
         mPasswordView.requestFocus();
+    }
+
+    @Override
+    public void showLoginMessage(String message) {
+        SnackbarUtils.show(mAccountView, message);
     }
 
     @Override

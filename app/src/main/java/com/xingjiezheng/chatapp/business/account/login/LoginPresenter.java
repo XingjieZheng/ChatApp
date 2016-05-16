@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xingjiezheng.chatapp.R;
+import com.xingjiezheng.chatapp.usecase.UseCase;
+import com.xingjiezheng.chatapp.usecase.UseCaseHandler;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -66,8 +68,33 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         } else {
             loginView.showProgress();
-            // TODO: 2016/4/7  request net login here
+
+            loginOnServer(account, password);
         }
+    }
+
+    private void loginOnServer(String account, String password) {
+        // TODO: 2016/4/7  request net login here
+        UseCaseHandler.getInstance().execute(new AccountLoginUseCase(),
+                new AccountLoginUseCase.RequestValues(account, password),
+                new UseCase.UseCaseCallback<AccountLoginUseCase.ResponseValue>() {
+
+                    @Override
+                    public void onSuccess(AccountLoginUseCase.ResponseValue response) {
+                        loginView.hideProgress();
+                        loginView.showLoginMessage(response.getAccountLoginBean().toString());
+                        LogUtils.LOGI(TAG, response.getAccountLoginBean().toString()
+                                + " nickName:" + response.getAccountLoginBean().getData().getNickName()
+                                + " userId:" + response.getAccountLoginBean().getData().getUserId());
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                        loginView.hideProgress();
+                        loginView.showLoginMessage(error.toString());
+                        LogUtils.LOGI(TAG, error.toString());
+                    }
+                });
     }
 
     @Override

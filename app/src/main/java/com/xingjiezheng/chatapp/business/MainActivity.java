@@ -16,11 +16,15 @@ import android.view.MenuItem;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
+import org.java_websocket.WebSocket;
+import org.java_websocket.client.WebSocketClient;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private String TAG = LogUtils.makeLogTag(MainActivity.class);
     private View rootView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,5 +115,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void testWebSocket() {
     }
 }

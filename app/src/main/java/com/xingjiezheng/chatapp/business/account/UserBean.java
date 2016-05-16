@@ -7,7 +7,6 @@ package com.xingjiezheng.chatapp.business.account;
 public class UserBean {
     private int userId;
 
-
     private String userName;
 
     public UserBean() {
