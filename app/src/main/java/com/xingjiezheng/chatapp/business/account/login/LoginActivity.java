@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private void init() {
         ButterKnife.bind(this);
-        loginPresenter = new LoginPresenter(this);
+        loginPresenter = new LoginPresenter(this, getLoaderManager());
     }
 
     private void setListeners() {

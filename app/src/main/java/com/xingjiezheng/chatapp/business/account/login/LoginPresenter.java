@@ -1,12 +1,17 @@
 package com.xingjiezheng.chatapp.business.account.login;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xingjiezheng.chatapp.R;
-import com.xingjiezheng.chatapp.usecase.UseCase;
-import com.xingjiezheng.chatapp.usecase.UseCaseHandler;
+import com.xingjiezheng.chatapp.api.ApiService;
+import com.xingjiezheng.chatapp.api.TaskId;
+import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
+
+import retrofit2.Call;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -14,14 +19,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by XingjieZheng
  * on 2016/4/7.
  */
-public class LoginPresenter implements LoginContract.Presenter {
+public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Presenter {
 
     private static final String TAG = LogUtils.makeLogTag(LoginPresenter.class);
 
     private LoginContract.View loginView;
+//    private LoaderManager loaderManager;
 
-    public LoginPresenter(@NonNull LoginContract.View loginView) {
+    public LoginPresenter(@NonNull LoginContract.View loginView, @NonNull LoaderManager loaderManager) {
         this.loginView = checkNotNull(loginView, "loginView cannot be null!");
+        super.loaderManager = checkNotNull(loaderManager, "loaderManager cannot be null");
+        super.context = loginView.getContext();
         loginView.setPresenter(this);
     }
 
@@ -68,34 +76,27 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
         } else {
             loginView.showProgress();
-
             loginOnServer(account, password);
         }
     }
 
-    private void loginOnServer(String account, String password) {
-        // TODO: 2016/4/7  request net login here
-        UseCaseHandler.getInstance().execute(new AccountLoginUseCase(),
-                new AccountLoginUseCase.RequestValues(account, password),
-                new UseCase.UseCaseCallback<AccountLoginUseCase.ResponseValue>() {
+    private void loginOnServer(final String account, final String password) {
+        // TODO: 2016/5/17
+        requestTask(TaskId.LOGIN, new ApiServiceTask<AccountLoginBean>() {
+            @Override
+            public Call<AccountLoginBean> run(ApiService apiService) {
+                return apiService.login(account, password);
+            }
 
-                    @Override
-                    public void onSuccess(AccountLoginUseCase.ResponseValue response) {
-                        loginView.hideProgress();
-                        loginView.showLoginMessage(response.getAccountLoginBean().toString());
-                        LogUtils.LOGI(TAG, response.getAccountLoginBean().toString()
-                                + " nickName:" + response.getAccountLoginBean().getData().getNickName()
-                                + " userId:" + response.getAccountLoginBean().getData().getUserId());
-                    }
+            @Override
+            public void onLoadFinished(Loader<AccountLoginBean> loader, AccountLoginBean data) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(data.toString());
+            }
+        });
 
-                    @Override
-                    public void onError(Error error) {
-                        loginView.hideProgress();
-                        loginView.showLoginMessage(error.toString());
-                        LogUtils.LOGI(TAG, error.toString());
-                    }
-                });
     }
+
 
     @Override
     public boolean isEmailValid(String email) {
