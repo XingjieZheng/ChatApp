@@ -1,6 +1,7 @@
 package com.xingjiezheng.chatapp.business.account.login;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -24,12 +25,13 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     private static final String TAG = LogUtils.makeLogTag(LoginPresenter.class);
 
     private LoginContract.View loginView;
-//    private LoaderManager loaderManager;
+    private LoaderManager loaderManager;
+    private Context context;
 
     public LoginPresenter(@NonNull LoginContract.View loginView, @NonNull LoaderManager loaderManager) {
         this.loginView = checkNotNull(loginView, "loginView cannot be null!");
-        super.loaderManager = checkNotNull(loaderManager, "loaderManager cannot be null");
-        super.context = loginView.getContext();
+        this.loaderManager = checkNotNull(loaderManager, "loaderManager cannot be null");
+        this.context = loginView.getContext();
         loginView.setPresenter(this);
     }
 
@@ -62,7 +64,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             loginView.setAccountEditViewErrorTips(loginView.getContext().getString(R.string.error_field_required));
             focusViewIsAccountEditView = true;
             cancel = true;
-        } else if (!isEmailValid(account)) {
+        } else if (!isAccountValid(account)) {
             loginView.setAccountEditViewErrorTips(loginView.getContext().getString(R.string.error_invalid_account));
             focusViewIsAccountEditView = true;
             cancel = true;
@@ -80,6 +82,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
         }
     }
 
+
     private void loginOnServer(final String account, final String password) {
         // TODO: 2016/5/17
         requestTask(TaskId.LOGIN, new ApiServiceTask<AccountLoginBean>() {
@@ -91,16 +94,21 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             @Override
             public void onLoadFinished(Loader<AccountLoginBean> loader, AccountLoginBean data) {
                 loginView.hideProgress();
-                loginView.showLoginMessage(data.toString());
+                if (data.isStatusSuccess()) {
+                    loginView.showLoginMessage(data.toString());
+                    LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+                } else {
+                    loginView.showLoginMessage(data.getMsg());
+                    LogUtils.LOGI(TAG, loader.getId() + " " + data.getMsg() + " " + System.currentTimeMillis());
+                }
             }
         });
-
     }
 
 
     @Override
-    public boolean isEmailValid(String email) {
-        return email.contains("1");
+    public boolean isAccountValid(String account) {
+        return account != null && account.length() == 11;
     }
 
     @Override
@@ -111,5 +119,15 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     @Override
     public void start() {
 
+    }
+
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    @Override
+    public LoaderManager getLoaderManager() {
+        return loaderManager;
     }
 }

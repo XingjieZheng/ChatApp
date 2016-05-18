@@ -10,6 +10,8 @@ import com.xingjiezheng.chatapp.api.ApiService;
 
 import retrofit2.Call;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by XingjieZheng
  * on 2016/4/4.
@@ -17,34 +19,34 @@ import retrofit2.Call;
 public abstract class BaseTaskExecutor {
 
 
-    protected LoaderManager loaderManager;
-    protected Context context;
-
     public <T> void requestTask(final int taskId, @NonNull final ApiServiceTask<T> apiServiceTask) {
 
-        checkNoNull();
-        loaderManager.initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
 
-            @Override
-            public Loader<T> onCreateLoader(int id, Bundle args) {
-                return new BaseTaskLoader<T>(context, taskId) {
+        checkNotNull(getLoaderManager(), "loaderManager can not be null in BaseTaskExecutor")
+                .initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
+
                     @Override
-                    protected Call<T> run(ApiService apiService) {
-                        return apiServiceTask.run(apiService);
+                    public Loader<T> onCreateLoader(int id, Bundle args) {
+                        return new BaseTaskLoader<T>(
+                                checkNotNull(getContext(), "context can not be null in BaseTaskExecutor"),
+                                taskId) {
+                            @Override
+                            protected Call<T> run(ApiService apiService) {
+                                return apiServiceTask.run(apiService);
+                            }
+                        };
                     }
-                };
-            }
 
-            @Override
-            public void onLoadFinished(Loader<T> loader, T data) {
-                apiServiceTask.onLoadFinished(loader, data);
-            }
+                    @Override
+                    public void onLoadFinished(Loader<T> loader, T data) {
+                        apiServiceTask.onLoadFinished(loader, data);
+                    }
 
-            @Override
-            public void onLoaderReset(Loader<T> loader) {
+                    @Override
+                    public void onLoaderReset(Loader<T> loader) {
 
-            }
-        });
+                    }
+                });
     }
 
     public abstract class ApiServiceTask<T> {
@@ -53,10 +55,9 @@ public abstract class BaseTaskExecutor {
         public abstract void onLoadFinished(Loader<T> loader, T data);
     }
 
-    private void checkNoNull() {
-        if (context == null || loaderManager == null) {
-            throw new NullPointerException("context or loaderManager can not be null in BaseTaskExecutor");
-        }
-    }
+
+    public abstract Context getContext();
+
+    public abstract LoaderManager getLoaderManager();
 
 }

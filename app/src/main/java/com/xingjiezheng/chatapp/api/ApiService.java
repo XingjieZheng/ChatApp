@@ -14,6 +14,7 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     String serverUrl = "http://coffeeapi.yuanlai.com";
+    String serverUrlTest = "http://10.10.11.250:8080/";
 
     @FormUrlEncoded
     @POST("account/login.do")

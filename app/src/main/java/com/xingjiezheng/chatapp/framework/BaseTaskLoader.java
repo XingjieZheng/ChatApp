@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.RetrofitUtils;
+import com.xingjiezheng.chatapp.util.LogUtils;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import retrofit2.Response;
  */
 public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
 
+    private static final String TAG = LogUtils.makeLogTag(BaseTaskLoader.class);
     private final int mTaskId;
 
     public BaseTaskLoader(Context context, int taskId) {
@@ -37,6 +39,7 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
             e.printStackTrace();
         }
 
+        LogUtils.LOGI(TAG, mTaskId + " loadInBackground " + System.currentTimeMillis());
         return result;
     }
 

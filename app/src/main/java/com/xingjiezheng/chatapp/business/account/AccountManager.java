@@ -22,7 +22,4 @@ public class AccountManager {
         return accountManager;
     }
 
-    public void loginByAccountAndPassword(String account, String Password) {
-
-    }
 }

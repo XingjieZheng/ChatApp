@@ -37,7 +37,7 @@ public interface LoginContract {
 
         void login();
 
-        boolean isEmailValid(String email);
+        boolean isAccountValid(String account);
 
         boolean isPasswordValid(String password);
 

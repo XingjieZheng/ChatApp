@@ -15,7 +15,7 @@ public class RetrofitUtils {
     public static ApiService getApiService() {
         if (apiService == null) {
             Retrofit commonRetrofit = new Retrofit.Builder()
-                    .baseUrl(ApiService.serverUrl)
+                    .baseUrl(ApiService.serverUrlTest)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             apiService = commonRetrofit.create(ApiService.class);
