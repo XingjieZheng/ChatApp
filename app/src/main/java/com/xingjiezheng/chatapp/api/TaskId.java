@@ -7,4 +7,8 @@ package com.xingjiezheng.chatapp.api;
 public interface TaskId {
 
     int LOGIN = 1;
+
+    int LOGIN_WITH_COOKIE = 2;
+
+    int GET_MY_PROFILE = 3;
 }

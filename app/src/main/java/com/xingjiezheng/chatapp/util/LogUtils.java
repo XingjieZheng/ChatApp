@@ -2,12 +2,14 @@ package com.xingjiezheng.chatapp.util;
 
 import android.util.Log;
 
+import com.xingjiezheng.chatapp.BuildConfig;
+
 public class LogUtils {
     private static final String LOG_PREFIX = "ChatApp_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 
-    public static boolean LOGGING_ENABLED = true;
+    public static boolean LOGGING_ENABLED = BuildConfig.DEBUG;
 
     public static String makeLogTag(String str) {
         if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {
@@ -94,4 +96,5 @@ public class LogUtils {
 
     private LogUtils() {
     }
+
 }

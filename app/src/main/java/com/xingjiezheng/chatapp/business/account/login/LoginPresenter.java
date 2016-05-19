@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
+import com.xingjiezheng.chatapp.business.account.Account;
+import com.xingjiezheng.chatapp.business.account.MyProfileBean;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
@@ -78,29 +80,93 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             }
         } else {
             loginView.showProgress();
-            loginOnServer(account, password);
+            loginInServer(account, password);
         }
     }
 
 
-    private void loginOnServer(final String account, final String password) {
+    private void loginInServer(final String accountName, final String password) {
         // TODO: 2016/5/17
         requestTask(TaskId.LOGIN, new ApiServiceTask<AccountLoginBean>() {
             @Override
             public Call<AccountLoginBean> run(ApiService apiService) {
-                return apiService.login(account, password);
+                return apiService.login(accountName, password);
             }
 
             @Override
-            public void onLoadFinished(Loader<AccountLoginBean> loader, AccountLoginBean data) {
+            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data.isStatusSuccess()) {
-                    loginView.showLoginMessage(data.toString());
-                    LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
-                } else {
-                    loginView.showLoginMessage(data.getMsg());
-                    LogUtils.LOGI(TAG, loader.getId() + " " + data.getMsg() + " " + System.currentTimeMillis());
-                }
+                loginView.showLoginMessage(data.toString());
+                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+
+                // TODO: 2016/5/19
+                String cookie = data.getData().getCookieMapInString();
+                LogUtils.LOGI(TAG, "cookie:" + cookie);
+
+                appAccount = new Account(data.getData().getUserId());
+                appAccount.setAccount(accountName);
+                appAccount.setPassword(password);
+                appAccount.setCookie(cookie);
+
+//                loginWithCookie();
+                getMyProfile();
+            }
+
+            @Override
+            public void onLoadFail(String errorMsg) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(errorMsg);
+            }
+        });
+    }
+
+
+    Account appAccount;
+
+    private void loginWithCookie() {
+        loginView.showProgress();
+        requestTask(TaskId.LOGIN_WITH_COOKIE, new ApiServiceTask<AccountLoginBean>() {
+
+            @Override
+            public Call<AccountLoginBean> run(ApiService apiService) {
+                return apiService.cookieLogin(appAccount.getCookie());
+            }
+
+            @Override
+            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(data.toString());
+                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+            }
+
+            @Override
+            public void onLoadFail(String errorMsg) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(errorMsg);
+            }
+        });
+    }
+
+    private void getMyProfile() {
+        loginView.showProgress();
+        requestTask(TaskId.GET_MY_PROFILE, new ApiServiceTask<MyProfileBean>() {
+
+            @Override
+            public Call<MyProfileBean> run(ApiService apiService) {
+                return apiService.getMyProfile(appAccount.getCookie());
+            }
+
+            @Override
+            public void onLoadSuccess(Loader<MyProfileBean> loader, MyProfileBean data) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(data.toString());
+                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+            }
+
+            @Override
+            public void onLoadFail(String errorMsg) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(errorMsg);
             }
         });
     }

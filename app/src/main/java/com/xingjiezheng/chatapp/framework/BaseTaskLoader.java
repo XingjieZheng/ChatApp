@@ -3,9 +3,12 @@ package com.xingjiezheng.chatapp.framework;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.RetrofitUtils;
 import com.xingjiezheng.chatapp.util.LogUtils;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -35,11 +38,23 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
         try {
             Response<T> response = call.execute();
             result = response.body();
+
+            if (LogUtils.LOGGING_ENABLED) {
+                if (result != null) {
+                    Gson gson = new Gson();
+                    String responsePrint = gson.toJson(result);
+//                String headersPrint = gson.toJson(response.headers());
+                    LogUtils.LOGI(TAG, "url:" + call.request().url()
+//                        + "\nheaders:" + headersPrint
+                            + "\nresponse:" + responsePrint);
+                } else {
+                    LogUtils.LOGI(TAG, mTaskId + " response is null");
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        LogUtils.LOGI(TAG, mTaskId + " loadInBackground " + System.currentTimeMillis());
         return result;
     }
 

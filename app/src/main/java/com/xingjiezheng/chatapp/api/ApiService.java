@@ -1,10 +1,12 @@
 package com.xingjiezheng.chatapp.api;
 
 import com.xingjiezheng.chatapp.business.account.login.AccountLoginBean;
+import com.xingjiezheng.chatapp.business.account.MyProfileBean;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -19,4 +21,14 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("account/login.do")
     Call<AccountLoginBean> login(@Field("mobile") String account, @Field("password") String password);
+
+
+    @POST("account/cookieLogin.do")
+    Call<AccountLoginBean> cookieLogin(@Header("Cookie") String cookie);
+
+
+    @POST("user/myDetail_1_2_0.do")
+    Call<MyProfileBean> getMyProfile(@Header("Cookie") String cookie);
+
+
 }

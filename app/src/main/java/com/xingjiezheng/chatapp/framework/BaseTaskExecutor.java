@@ -39,7 +39,11 @@ public abstract class BaseTaskExecutor {
 
                     @Override
                     public void onLoadFinished(Loader<T> loader, T data) {
-                        apiServiceTask.onLoadFinished(loader, data);
+                        if (data != null) {
+                            apiServiceTask.onLoadSuccess(loader, data);
+                        } else {
+                            apiServiceTask.onLoadFail("Error, response is null!");
+                        }
                     }
 
                     @Override
@@ -52,7 +56,9 @@ public abstract class BaseTaskExecutor {
     public abstract class ApiServiceTask<T> {
         public abstract Call<T> run(ApiService apiService);
 
-        public abstract void onLoadFinished(Loader<T> loader, T data);
+        public abstract void onLoadSuccess(Loader<T> loader, T data);
+
+        public abstract void onLoadFail(String errorMsg);
     }
 
 

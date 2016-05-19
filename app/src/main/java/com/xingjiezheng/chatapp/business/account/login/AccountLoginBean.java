@@ -4,6 +4,7 @@ import com.xingjiezheng.chatapp.framework.BaseBean;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登录的初始信息
@@ -73,7 +74,7 @@ public class AccountLoginBean extends BaseBean implements Serializable {
         /**
          * 用户唯一标示
          */
-        private String userId;
+        private int userId;
 
 
         private boolean isLogin = false;
@@ -99,15 +100,27 @@ public class AccountLoginBean extends BaseBean implements Serializable {
             return cookieMap;
         }
 
+        public String getCookieMapInString() {
+            if (cookieMap == null || cookieMap.size() == 0) {
+                return null;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<String, String> cookie : cookieMap.entrySet()) {
+                sb.append(cookie.getKey()).append("=")
+                        .append(cookie.getValue()).append(";");
+            }
+            return sb.toString();
+        }
+
         public void setCookieMap(HashMap<String, String> cookieMap) {
             this.cookieMap = cookieMap;
         }
 
-        public String getUserId() {
+        public int getUserId() {
             return userId;
         }
 
-        public void setUserId(String userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
 
