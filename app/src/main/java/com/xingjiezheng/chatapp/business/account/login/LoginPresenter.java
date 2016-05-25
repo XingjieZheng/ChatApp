@@ -10,6 +10,7 @@ import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
 import com.xingjiezheng.chatapp.business.account.Account;
+import com.xingjiezheng.chatapp.business.account.AccountManager;
 import com.xingjiezheng.chatapp.business.account.MyProfileBean;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
@@ -103,12 +104,13 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
                 String cookie = data.getData().getCookieMapInString();
                 LogUtils.LOGI(TAG, "cookie:" + cookie);
 
-                appAccount = new Account(data.getData().getUserId());
+                Account appAccount = new Account(data.getData().getUserId());
                 appAccount.setAccount(accountName);
                 appAccount.setPassword(password);
                 appAccount.setCookie(cookie);
 
-//                loginWithCookie();
+                AccountManager.getInstance().saveLoginAccount(appAccount);
+
                 getMyProfile();
             }
 
@@ -120,16 +122,13 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
         });
     }
 
-
-    Account appAccount;
-
     private void loginWithCookie() {
         loginView.showProgress();
-        requestTask(TaskId.LOGIN_WITH_COOKIE, new ApiServiceTask<AccountLoginBean>() {
+        requestTask(TaskId.LOGIN_WITH_COOKIE, true, new ApiServiceTask<AccountLoginBean>() {
 
             @Override
             public Call<AccountLoginBean> run(ApiService apiService) {
-                return apiService.cookieLogin(appAccount.getCookie());
+                return apiService.cookieLogin();
             }
 
             @Override
@@ -149,11 +148,11 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
 
     private void getMyProfile() {
         loginView.showProgress();
-        requestTask(TaskId.GET_MY_PROFILE, new ApiServiceTask<MyProfileBean>() {
+        requestTask(TaskId.GET_MY_PROFILE, true, new ApiServiceTask<MyProfileBean>() {
 
             @Override
             public Call<MyProfileBean> run(ApiService apiService) {
-                return apiService.getMyProfile(appAccount.getCookie());
+                return apiService.getMyProfile();
             }
 
             @Override

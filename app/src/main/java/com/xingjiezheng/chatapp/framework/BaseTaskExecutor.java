@@ -18,10 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public abstract class BaseTaskExecutor {
 
-
     public <T> void requestTask(final int taskId, @NonNull final ApiServiceTask<T> apiServiceTask) {
+        requestTask(taskId, false, apiServiceTask);
 
+    }
 
+    public <T> void requestTask(final int taskId, final boolean isWithCookie, @NonNull final ApiServiceTask<T> apiServiceTask) {
         checkNotNull(getLoaderManager(), "loaderManager can not be null in BaseTaskExecutor")
                 .initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
 
@@ -29,7 +31,8 @@ public abstract class BaseTaskExecutor {
                     public Loader<T> onCreateLoader(int id, Bundle args) {
                         return new BaseTaskLoader<T>(
                                 checkNotNull(getContext(), "context can not be null in BaseTaskExecutor"),
-                                taskId) {
+                                taskId,
+                                isWithCookie) {
                             @Override
                             protected Call<T> run(ApiService apiService) {
                                 return apiServiceTask.run(apiService);

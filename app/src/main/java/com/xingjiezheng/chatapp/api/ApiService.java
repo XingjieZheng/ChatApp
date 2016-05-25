@@ -24,11 +24,11 @@ public interface ApiService {
 
 
     @POST("account/cookieLogin.do")
-    Call<AccountLoginBean> cookieLogin(@Header("Cookie") String cookie);
+    Call<AccountLoginBean> cookieLogin();
 
 
     @POST("user/myDetail_1_2_0.do")
-    Call<MyProfileBean> getMyProfile(@Header("Cookie") String cookie);
+    Call<MyProfileBean> getMyProfile();
 
 
 }

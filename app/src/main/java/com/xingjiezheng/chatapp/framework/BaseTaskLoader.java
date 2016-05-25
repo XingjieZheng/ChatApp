@@ -23,17 +23,24 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
 
     private static final String TAG = LogUtils.makeLogTag(BaseTaskLoader.class);
     private final int mTaskId;
+    private final boolean isWithCookie;
 
-    public BaseTaskLoader(Context context, int taskId) {
+    public BaseTaskLoader(Context context, int taskId, boolean isWithCookie) {
         super(context);
         this.mTaskId = taskId;
+        this.isWithCookie = isWithCookie;
     }
 
 
     @Override
     public T loadInBackground() {
         T result = null;
-        ApiService apiService = RetrofitUtils.getApiService();
+        ApiService apiService;
+        if (isWithCookie) {
+            apiService = RetrofitUtils.getApiServiceWithCookie();
+        } else {
+            apiService = RetrofitUtils.getApiServiceWithoutCookie();
+        }
         Call<T> call = run(apiService);
         try {
             Response<T> response = call.execute();

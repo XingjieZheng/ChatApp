@@ -32,9 +32,18 @@ public class AccountManager {
         return account;
     }
 
-    public Account getLoginAccountFromSql() {
+    private Account getLoginAccountFromSql() {
         // TODO: 2016/5/19
         return new Account(123456);
+    }
+
+    private void saveLoginAccountInSql() {
+
+    }
+
+    public void saveLoginAccount(Account account) {
+        Global.loginAccount = account;
+        saveLoginAccountInSql();
     }
 
 }
