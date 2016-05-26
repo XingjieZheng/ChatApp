@@ -1,6 +1,9 @@
 package com.xingjiezheng.chatapp.business.account;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.xingjiezheng.chatapp.business.Global;
+import com.xingjiezheng.chatapp.db.DbManager;
 
 /**
  * Created by XingjieZheng

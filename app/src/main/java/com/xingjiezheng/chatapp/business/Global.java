@@ -3,6 +3,7 @@ package com.xingjiezheng.chatapp.business;
 import android.content.Context;
 
 import com.xingjiezheng.chatapp.business.account.Account;
+import com.xingjiezheng.chatapp.db.DbManager;
 
 /**
  * Created by XingjieZheng
@@ -13,10 +14,11 @@ public class Global {
 
     private static Global instance;
     public static Account loginAccount;
-    public Context appContext;
+    public static Context appContext;
 
     private Global(Context appContext) {
-        this.appContext = appContext;
+        Global.appContext = appContext;
+        DbManager.getInstance();
     }
 
     public static Global getInstance(Context appContext) {
