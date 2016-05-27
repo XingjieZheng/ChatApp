@@ -12,7 +12,7 @@ public interface AccountTable extends BaseTable {
     String ACCOUNT_PWD = "account_pwd";
     String ACCOUNT_USER_ID = "account_user_id";
     String ACCOUNT_COOKIE = "account_cookie";
-    String ACCOUNT_ONLINE = "account_onlike";
+    String ACCOUNT_LOGIN_TIME = "account_login_time";
 
     String SQL_TABLE_CREATE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
@@ -21,7 +21,7 @@ public interface AccountTable extends BaseTable {
                     + ACCOUNT_PWD + " TEXT, "
                     + ACCOUNT_USER_ID + " INTEGER, "
                     + ACCOUNT_COOKIE + " TEXT "
-                    + ACCOUNT_ONLINE + " BOOLEAN)";
+                    + ACCOUNT_LOGIN_TIME + " INTEGER)";
 
     String SQL_TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;
 }

@@ -1,9 +1,6 @@
 package com.xingjiezheng.chatapp.business.account;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.xingjiezheng.chatapp.business.Global;
-import com.xingjiezheng.chatapp.db.DbManager;
 
 /**
  * Created by XingjieZheng
@@ -29,24 +26,24 @@ public class AccountManager {
 
     public Account getLoginAccount() {
         Account account = Global.loginAccount;
-        if (account == null) {
+//        if (account == null) {
             account = getLoginAccountFromSql();
-        }
+//        }
         return account;
     }
 
-    private Account getLoginAccountFromSql() {
-        // TODO: 2016/5/19
-        return new Account(123456);
+    public Account getLoginAccountFromSql() {
+        return AccountDao.getInstance().getLoginAccount();
     }
 
-    private void saveLoginAccountInSql() {
+    private void saveLoginAccountInSql(Account account) {
+        AccountDao.getInstance().saveLoginAccount(account);
 
     }
 
     public void saveLoginAccount(Account account) {
         Global.loginAccount = account;
-        saveLoginAccountInSql();
+        saveLoginAccountInSql(account);
     }
 
 }
