@@ -1,5 +1,6 @@
 package com.xingjiezheng.chatapp.api;
 
+import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
 
 import java.io.IOException;
@@ -34,11 +35,11 @@ public class RetrofitUtils {
     }
 
     public static ApiService getApiServiceWithCookie() {
+        String newCookie = AccountManager.getInstance().getLoginAccount().getCookie();
         if (cookie == null) {
-            cookie = AccountManager.getInstance().getLoginAccount().getCookie();
+            cookie = newCookie;
         }
-
-        if (apiServiceWithCookie == null || !cookie.equals(AccountManager.getInstance().getLoginAccount().getCookie())) {
+        if (apiServiceWithCookie == null || !cookie.equals(newCookie)) {
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(new Interceptor() {
                 @Override

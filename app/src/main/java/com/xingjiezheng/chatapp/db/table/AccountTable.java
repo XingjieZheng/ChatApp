@@ -20,7 +20,7 @@ public interface AccountTable extends BaseTable {
                     + ACCOUNT_ID + " TEXT, "
                     + ACCOUNT_PWD + " TEXT, "
                     + ACCOUNT_USER_ID + " INTEGER, "
-                    + ACCOUNT_COOKIE + " TEXT "
+                    + ACCOUNT_COOKIE + " TEXT, "
                     + ACCOUNT_LOGIN_TIME + " INTEGER)";
 
     String SQL_TABLE_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME;

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.xingjiezheng.chatapp.db.DbManager;
 import com.xingjiezheng.chatapp.db.table.AccountTable;
+import com.xingjiezheng.chatapp.util.LogUtils;
 
 /**
  * Created by XingjieZheng
@@ -13,6 +14,8 @@ import com.xingjiezheng.chatapp.db.table.AccountTable;
  */
 public class AccountDao implements AccountTable {
 
+
+    private static final String TAG = AccountDao.class.getSimpleName();
     private static AccountDao accountDao;
     private SQLiteDatabase db;
 
@@ -33,15 +36,21 @@ public class AccountDao implements AccountTable {
 
     public void saveLoginAccount(Account account) {
         Cursor cursor = null;
-        cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_ID + "= ?", new String[]{account.getAccount()}, null, null, null);
-        int id = -1;
-        if (cursor != null && cursor.getCount() != 0) {
-            id = cursor.getInt(cursor.getColumnIndex(_ID));
-        }
-        if (id != -1) {
-            updateAccount(account, id);
-        } else {
-            addAccount(account);
+        try {
+            LogUtils.LOGI(TAG, _ID);
+            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_ID + "=?", new String[]{account.getAccount()}, null, null, null);
+            int id = -1;
+            if (cursor.moveToNext() && cursor.getCount() >= 0) {
+                id = cursor.getInt(cursor.getColumnIndex(_ID));
+            }
+            if (id != -1) {
+                updateAccount(account, id);
+            } else {
+                addAccount(account);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         if (cursor != null) {
             cursor.close();
@@ -72,15 +81,18 @@ public class AccountDao implements AccountTable {
         Account account = null;
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_NAME, new String[]{ACCOUNT_ID, ACCOUNT_PWD, ACCOUNT_USER_ID}, null, null, null, null, ACCOUNT_LOGIN_TIME, "1");
+            cursor = db.query(TABLE_NAME, null, null, null, null, null, ACCOUNT_LOGIN_TIME, "1");
+
+            if (cursor.moveToNext() && cursor.getCount() >= 0) {
+                account = new Account(cursor.getInt(cursor.getColumnIndex(ACCOUNT_USER_ID)));
+                account.setAccount(cursor.getString(cursor.getColumnIndex(ACCOUNT_ID)));
+                account.setPassword(cursor.getString(cursor.getColumnIndex(ACCOUNT_PWD)));
+                account.setCookie(cursor.getString(cursor.getColumnIndex(ACCOUNT_COOKIE)));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (cursor != null && cursor.getCount() != 0) {
-            account = new Account(cursor.getInt(cursor.getColumnIndex(ACCOUNT_USER_ID)));
-            account.setAccount(cursor.getString(cursor.getColumnIndex(ACCOUNT_ID)));
-            account.setPassword(cursor.getString(cursor.getColumnIndex(ACCOUNT_PWD)));
-        }
+
         if (cursor != null) {
             cursor.close();
         }

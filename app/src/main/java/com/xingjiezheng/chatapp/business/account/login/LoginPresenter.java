@@ -97,21 +97,19 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             @Override
             public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
                 loginView.hideProgress();
-                loginView.showLoginMessage(data.toString());
-                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+                if (data != null && data.getData() != null) {
+                    if (data.isStatusSuccess()) {
+                        Account appAccount = new Account(data.getData().getUserId());
+                        appAccount.setAccount(accountName);
+                        appAccount.setPassword(password);
+                        appAccount.setCookie(data.getData().getCookieMapInString());
 
-                // TODO: 2016/5/19
-                String cookie = data.getData().getCookieMapInString();
-                LogUtils.LOGI(TAG, "cookie:" + cookie);
+                        AccountManager.getInstance().saveLoginAccount(appAccount);
 
-                Account appAccount = new Account(data.getData().getUserId());
-                appAccount.setAccount(accountName);
-                appAccount.setPassword(password);
-                appAccount.setCookie(cookie);
-
-                AccountManager.getInstance().saveLoginAccount(appAccount);
-
-                getMyProfile();
+                        getMyProfile();
+                    }
+                    loginView.showLoginMessage(data.getMsg());
+                }
             }
 
             @Override

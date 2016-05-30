@@ -26,9 +26,9 @@ public class AccountManager {
 
     public Account getLoginAccount() {
         Account account = Global.loginAccount;
-//        if (account == null) {
+        if (account == null) {
             account = getLoginAccountFromSql();
-//        }
+        }
         return account;
     }
 

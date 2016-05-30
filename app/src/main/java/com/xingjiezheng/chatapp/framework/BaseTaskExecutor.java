@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.xingjiezheng.chatapp.api.ApiService;
+import com.xingjiezheng.chatapp.business.account.Account;
+import com.xingjiezheng.chatapp.business.account.AccountManager;
 
 import retrofit2.Call;
 
@@ -24,6 +26,11 @@ public abstract class BaseTaskExecutor {
     }
 
     public <T> void requestTask(final int taskId, final boolean isWithCookie, @NonNull final ApiServiceTask<T> apiServiceTask) {
+        Account account = AccountManager.getInstance().getLoginAccount();
+        if (account == null || account.getCookie() == null) {
+            apiServiceTask.onLoadFail("Error, cookie is null. Please login again!");
+            return;
+        }
         checkNotNull(getLoaderManager(), "loaderManager can not be null in BaseTaskExecutor")
                 .initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
 
