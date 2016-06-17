@@ -8,8 +8,6 @@ import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.RetrofitUtils;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -69,6 +67,13 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     protected void onStartLoading() {
+        LogUtils.LOGE(TAG, "onStartLoading()");
         forceLoad();
+    }
+
+    @Override
+    public void forceLoad() {
+        super.forceLoad();
+        LogUtils.LOGE(TAG, "forceLoad()");
     }
 }

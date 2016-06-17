@@ -36,6 +36,7 @@ public abstract class BaseTaskExecutor {
 
                     @Override
                     public Loader<T> onCreateLoader(int id, Bundle args) {
+
                         return new BaseTaskLoader<T>(
                                 checkNotNull(getContext(), "context can not be null in BaseTaskExecutor"),
                                 taskId,
