@@ -88,7 +88,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
 
     private void loginInServer(final String accountName, final String password) {
         // TODO: 2016/5/17
-        requestTask(TaskId.LOGIN, new ApiServiceTask<AccountLoginBean>() {
+        requestTask(TaskId.LOGIN, true, new ApiServiceTask<AccountLoginBean>() {
             @Override
             public Call<AccountLoginBean> run(ApiService apiService) {
                 return apiService.login(accountName, password);
@@ -106,7 +106,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
 
                         AccountManager.getInstance().saveLoginAccount(appAccount);
 
-                        getMyProfile();
+//                        getMyProfile();
                     }
                     loginView.showLoginMessage(data.getMsg());
                 }

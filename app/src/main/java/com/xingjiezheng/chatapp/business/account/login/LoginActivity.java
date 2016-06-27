@@ -58,8 +58,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     private void setTestParams() {
-        mAccountView.setText("18000008030");
-        mPasswordView.setText("111111");
+        mAccountView.setText("13713709078");
+        mPasswordView.setText("123456");
     }
 
     private void init() {
@@ -136,11 +136,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mAccountView.setAdapter(adapter);
     }
 
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-        hideProgress();
-    }
+//    @Override
+//    public void onBackPressed() {
+////        super.onBackPressed();
+//        hideProgress();
+//    }
 
     @Override
     public void showProgress() {

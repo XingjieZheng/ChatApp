@@ -21,47 +21,60 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class BaseTaskExecutor {
 
     public <T> void requestTask(final int taskId, @NonNull final ApiServiceTask<T> apiServiceTask) {
-        requestTask(taskId, false, apiServiceTask);
-
+        requestTask(taskId, false, false, apiServiceTask);
     }
 
-    public <T> void requestTask(final int taskId, final boolean isWithCookie, @NonNull final ApiServiceTask<T> apiServiceTask) {
+    public <T> void requestTask(final int taskId, boolean isForceLoad, @NonNull final ApiServiceTask<T> apiServiceTask) {
+        requestTask(taskId, false, isForceLoad, apiServiceTask);
+    }
+
+    public <T> void requestTask(final int taskId, final boolean isWithCookie, boolean isForceLoad, @NonNull final ApiServiceTask<T> apiServiceTask) {
         Account account = AccountManager.getInstance().getLoginAccount();
-        if (account == null || account.getCookie() == null) {
+        if (isWithCookie && (account == null || account.getCookie() == null)) {
             apiServiceTask.onLoadFail("Error, cookie is null. Please login again!");
             return;
         }
-        checkNotNull(getLoaderManager(), "loaderManager can not be null in BaseTaskExecutor")
-                .initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
 
+        checkNotNull(getLoaderManager(), "loaderManager can not be null in BaseTaskExecutor");
+
+        if (isForceLoad) {
+            Loader loader = getLoaderManager().getLoader(taskId);
+            if (loader != null && loader.isStarted()) {
+                loader.forceLoad();
+                return;
+            }
+        }
+
+        getLoaderManager().initLoader(taskId, null, new LoaderManager.LoaderCallbacks<T>() {
+
+            @Override
+            public Loader<T> onCreateLoader(int id, Bundle args) {
+                // new task loader
+                return new BaseTaskLoader<T>(
+                        checkNotNull(getContext(), "context can not be null in BaseTaskExecutor"),
+                        taskId,
+                        isWithCookie) {
                     @Override
-                    public Loader<T> onCreateLoader(int id, Bundle args) {
-
-                        return new BaseTaskLoader<T>(
-                                checkNotNull(getContext(), "context can not be null in BaseTaskExecutor"),
-                                taskId,
-                                isWithCookie) {
-                            @Override
-                            protected Call<T> run(ApiService apiService) {
-                                return apiServiceTask.run(apiService);
-                            }
-                        };
+                    protected Call<T> run(ApiService apiService) {
+                        return apiServiceTask.run(apiService);
                     }
+                };
+            }
 
-                    @Override
-                    public void onLoadFinished(Loader<T> loader, T data) {
-                        if (data != null) {
-                            apiServiceTask.onLoadSuccess(loader, data);
-                        } else {
-                            apiServiceTask.onLoadFail("Error, response is null!");
-                        }
-                    }
+            @Override
+            public void onLoadFinished(Loader<T> loader, T data) {
+                if (data != null) {
+                    apiServiceTask.onLoadSuccess(loader, data);
+                } else {
+                    apiServiceTask.onLoadFail("Error, response is null!");
+                }
+            }
 
-                    @Override
-                    public void onLoaderReset(Loader<T> loader) {
+            @Override
+            public void onLoaderReset(Loader<T> loader) {
 
-                    }
-                });
+            }
+        });
     }
 
     public abstract class ApiServiceTask<T> {

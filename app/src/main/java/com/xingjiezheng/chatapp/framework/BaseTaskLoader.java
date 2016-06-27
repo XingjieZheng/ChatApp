@@ -76,4 +76,17 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
         super.forceLoad();
         LogUtils.LOGE(TAG, "forceLoad()");
     }
+
+
+    @Override
+    protected void onReset() {
+        super.onReset();
+        LogUtils.LOGE(TAG, "onReset()");
+    }
+
+    @Override
+    public void deliverResult(T data) {
+        super.deliverResult(data);
+        LogUtils.LOGE(TAG, "deliverResult()");
+    }
 }
