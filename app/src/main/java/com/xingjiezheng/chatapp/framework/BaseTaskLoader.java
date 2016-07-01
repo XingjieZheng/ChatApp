@@ -34,23 +34,22 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
     public T loadInBackground() {
         T result = null;
         ApiService apiService;
-        if (isWithCookie) {
-            apiService = RetrofitUtils.getApiServiceWithCookie();
-        } else {
+//        if (isWithCookie) {
+//            apiService = RetrofitUtils.getApiServiceWithCookie();
+//        } else {
             apiService = RetrofitUtils.getApiServiceWithoutCookie();
-        }
+//        }
         Call<T> call = run(apiService);
         try {
             Response<T> response = call.execute();
             result = response.body();
-
             if (LogUtils.LOGGING_ENABLED) {
                 if (result != null) {
                     Gson gson = new Gson();
                     String responsePrint = gson.toJson(result);
-//                String headersPrint = gson.toJson(response.headers());
+                String headersPrint = gson.toJson(response.headers());
                     LogUtils.LOGI(TAG, "url:" + call.request().url()
-//                        + "\nheaders:" + headersPrint
+                        + "\nheaders:" + headersPrint
                             + "\nresponse:" + responsePrint);
                 } else {
                     LogUtils.LOGI(TAG, mTaskId + " response is null");
@@ -67,26 +66,26 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     protected void onStartLoading() {
-        LogUtils.LOGE(TAG, "onStartLoading()");
+//        LogUtils.LOGE(TAG, "onStartLoading()");
         forceLoad();
     }
 
     @Override
     public void forceLoad() {
         super.forceLoad();
-        LogUtils.LOGE(TAG, "forceLoad()");
+//        LogUtils.LOGE(TAG, "forceLoad()");
     }
 
 
     @Override
     protected void onReset() {
         super.onReset();
-        LogUtils.LOGE(TAG, "onReset()");
+//        LogUtils.LOGE(TAG, "onReset()");
     }
 
     @Override
     public void deliverResult(T data) {
         super.deliverResult(data);
-        LogUtils.LOGE(TAG, "deliverResult()");
+//        LogUtils.LOGE(TAG, "deliverResult()");
     }
 }

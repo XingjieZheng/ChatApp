@@ -1,23 +1,27 @@
 package com.xingjiezheng.chatapp.business.account;
 
+import java.util.List;
+
+import okhttp3.Cookie;
+
 /**
  * Created by XingjieZheng
  * on 2016/5/19.
  */
 public class Account {
 
-    private static final String TAG = "Account";
-    private final int userId;
-    private String cookie;
+    private static final String TAG = Account.class.getSimpleName();
+    private final String userId;
     private String account;
     private String password;
     private boolean isSavePassword;
+    private List<Cookie> cookieList;
 
-    public Account(int userId) {
+    public Account(String userId) {
         this.userId = userId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -27,15 +31,6 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-
-    public String getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
     }
 
     public String getAccount() {
@@ -52,5 +47,13 @@ public class Account {
 
     public void setSavePassword(boolean savePassword) {
         isSavePassword = savePassword;
+    }
+
+    public List<Cookie> getCookieList() {
+        return cookieList;
+    }
+
+    public void setCookieList(List<Cookie> cookieList) {
+        this.cookieList = cookieList;
     }
 }

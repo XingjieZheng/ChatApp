@@ -1,5 +1,6 @@
 package com.xingjiezheng.chatapp.business.account.login;
 
+import com.xingjiezheng.chatapp.business.account.User;
 import com.xingjiezheng.chatapp.framework.BaseBean;
 
 import java.io.Serializable;
@@ -10,45 +11,49 @@ import java.util.Map;
  * 登录的初始信息
  */
 public class AccountLoginBean extends BaseBean implements Serializable {
-    private Data data;
 
+    private static final long serialVersionUID = 1L;
     /**
-     * 用户id
+     * 用户
      */
-    private String accountName;
-    /**
-     * 登录信息-是否记录密码
-     */
-    private boolean isRememberPassword;
-
+    private String account;
     /**
      * 登录信息-本地账户密码
      */
     private String accountPwd;
+    /**
+     * 登录信息-是否记录密码
+     */
+    private boolean isRememberPassword;
+    private User user;
 
+    /**
+     * cookie
+     */
+    private HashMap<String, String> cookieMap;
 
-    public Data getData() {
-        return data;
+    public HashMap<String, String> getCookieMap() {
+        return cookieMap;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public String getCookieMapInString() {
+        if (cookieMap == null || cookieMap.size() == 0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> cookie : cookieMap.entrySet()) {
+            sb.append(cookie.getKey()).append("=")
+                    .append(cookie.getValue()).append(";");
+        }
+        return sb.toString();
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public boolean isRememberPassword() {
-        return isRememberPassword;
-    }
-
-    public void setRememberPassword(boolean isRememberPassword) {
-        this.isRememberPassword = isRememberPassword;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getAccountPwd() {
@@ -59,110 +64,24 @@ public class AccountLoginBean extends BaseBean implements Serializable {
         this.accountPwd = accountPwd;
     }
 
-    public static class Data implements Serializable {
-        private static final long serialVersionUID = 1L;
+    public boolean isRememberPassword() {
+        return isRememberPassword;
+    }
 
+    public void setRememberPassword(boolean rememberPassword) {
+        isRememberPassword = rememberPassword;
+    }
 
-        /**
-         * 用户性别
-         */
-        private int gender;
-        /**
-         * cookie
-         */
-        private HashMap<String, String> cookieMap;
-        /**
-         * 用户唯一标示
-         */
-        private int userId;
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-        private boolean isLogin = false;
-
-        private String nickName;
-
-        private String avatar;
-        private String head;
-        /**
-         * 1 用户不存在；2 密码错误
-         */
-        private int state;
-
-        public int getGender() {
-            return gender;
-        }
-
-        public void setGender(int gender) {
-            this.gender = gender;
-        }
-
-        public HashMap<String, String> getCookieMap() {
-            return cookieMap;
-        }
-
-        public String getCookieMapInString() {
-            if (cookieMap == null || cookieMap.size() == 0) {
-                return null;
-            }
-            StringBuilder sb = new StringBuilder();
-            for (Map.Entry<String, String> cookie : cookieMap.entrySet()) {
-                sb.append(cookie.getKey()).append("=")
-                        .append(cookie.getValue()).append(";");
-            }
-            return sb.toString();
-        }
-
-        public void setCookieMap(HashMap<String, String> cookieMap) {
-            this.cookieMap = cookieMap;
-        }
-
-        public int getUserId() {
-            return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
-        public boolean isLogin() {
-            return isLogin;
-        }
-
-        public void setLogin(boolean login) {
-            isLogin = login;
-        }
-
-        public String getNickName() {
-            return nickName;
-        }
-
-        public void setNickName(String nickName) {
-            this.nickName = nickName;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
-        }
-
-        public String getHead() {
-            return head;
-        }
-
-        public void setHead(String head) {
-            this.head = head;
-        }
-
-        public int getState() {
-            return state;
-        }
-
-        public void setState(int state) {
-            this.state = state;
-        }
+    public void setCookieMap(HashMap<String, String> cookieMap) {
+        this.cookieMap = cookieMap;
     }
 
 }

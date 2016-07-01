@@ -41,5 +41,7 @@ public interface LoginContract {
 
         boolean isPasswordValid(String password);
 
+        void getContacts();
+
     }
 }

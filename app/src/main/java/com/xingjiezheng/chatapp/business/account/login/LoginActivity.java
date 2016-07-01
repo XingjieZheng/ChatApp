@@ -5,6 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A login screen that offers login via email/password.
@@ -55,6 +59,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         // TODO: 2016/5/16
         setTestParams();
+
     }
 
     private void setTestParams() {
@@ -71,7 +76,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                LogUtils.LOGI(TAG, "id:" + id);
                 if (id == R.id.login
                         || id == EditorInfo.IME_NULL
                         || id == EditorInfo.IME_ACTION_DONE) {
@@ -126,7 +130,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
     }
 
-
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -136,11 +139,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         mAccountView.setAdapter(adapter);
     }
 
-//    @Override
-//    public void onBackPressed() {
-////        super.onBackPressed();
-//        hideProgress();
-//    }
 
     @Override
     public void showProgress() {
@@ -195,6 +193,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
         loginPresenter = presenter;
+    }
+
+    @OnClick(R.id.get_contacts_button)
+    public void getContacts() {
+        loginPresenter.getContacts();
     }
 }
 

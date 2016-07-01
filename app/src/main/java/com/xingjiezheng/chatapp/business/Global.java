@@ -13,8 +13,8 @@ public class Global {
 
 
     private static Global instance;
-    public static Account loginAccount;
     public static Context appContext;
+    public static Account loginAccount;
 
     private Global(Context appContext) {
         Global.appContext = appContext;

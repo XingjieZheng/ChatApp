@@ -2,7 +2,6 @@ package com.xingjiezheng.chatapp.business.account.login;
 
 import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -11,7 +10,7 @@ import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
 import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
-import com.xingjiezheng.chatapp.business.account.MyProfileBean;
+import com.xingjiezheng.chatapp.business.contacts.ContactsBean;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
@@ -30,6 +29,8 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     private LoginContract.View loginView;
     private LoaderManager loaderManager;
     private Context context;
+    private String accountName;
+    private String password;
 
     public LoginPresenter(@NonNull LoginContract.View loginView, @NonNull LoaderManager loaderManager) {
         this.loginView = checkNotNull(loginView, "loginView cannot be null!");
@@ -85,9 +86,9 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
         }
     }
 
-
-    private void loginInServer(final String accountName, final String password) {
-        // TODO: 2016/5/17
+    private void loginInServer(String account, String pwd) {
+        this.accountName = account;
+        this.password = pwd;
         requestTask(TaskId.LOGIN, true, new ApiServiceTask<AccountLoginBean>() {
             @Override
             public Call<AccountLoginBean> run(ApiService apiService) {
@@ -95,18 +96,14 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             }
 
             @Override
-            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
+            public void onLoadSuccess(AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data != null && data.getData() != null) {
+                if (data != null) {
                     if (data.isStatusSuccess()) {
-                        Account appAccount = new Account(data.getData().getUserId());
+                        Account appAccount = new Account(data.getUser().getUserId());
                         appAccount.setAccount(accountName);
                         appAccount.setPassword(password);
-                        appAccount.setCookie(data.getData().getCookieMapInString());
-
-                        AccountManager.getInstance().saveLoginAccount(appAccount);
-
-//                        getMyProfile();
+                        AccountManager.getInstance().saveLoginAccountInfo(appAccount);
                     }
                     loginView.showLoginMessage(data.getMsg());
                 }
@@ -120,54 +117,29 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
         });
     }
 
-    private void loginWithCookie() {
-        loginView.showProgress();
-        requestTask(TaskId.LOGIN_WITH_COOKIE, true, new ApiServiceTask<AccountLoginBean>() {
-
-            @Override
-            public Call<AccountLoginBean> run(ApiService apiService) {
-                return apiService.cookieLogin();
-            }
-
-            @Override
-            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(data.toString());
-                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
-            }
-
-            @Override
-            public void onLoadFail(String errorMsg) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(errorMsg);
-            }
-        });
-    }
-
-    private void getMyProfile() {
-        loginView.showProgress();
-        requestTask(TaskId.GET_MY_PROFILE, true, new ApiServiceTask<MyProfileBean>() {
-
-            @Override
-            public Call<MyProfileBean> run(ApiService apiService) {
-                return apiService.getMyProfile();
-            }
-
-            @Override
-            public void onLoadSuccess(Loader<MyProfileBean> loader, MyProfileBean data) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(data.toString());
-                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
-            }
-
-            @Override
-            public void onLoadFail(String errorMsg) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(errorMsg);
-            }
-        });
-    }
-
+//    private void loginWithCookie() {
+//        loginView.showProgress();
+//        requestTask(TaskId.LOGIN_WITH_COOKIE, true, new ApiServiceTask<AccountLoginBean>() {
+//
+//            @Override
+//            public Call<AccountLoginBean> run(ApiService apiService) {
+//                return apiService.cookieLogin();
+//            }
+//
+//            @Override
+//            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
+//                loginView.hideProgress();
+//                loginView.showLoginMessage(data.toString());
+//                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
+//            }
+//
+//            @Override
+//            public void onLoadFail(String errorMsg) {
+//                loginView.hideProgress();
+//                loginView.showLoginMessage(errorMsg);
+//            }
+//        });
+//    }
 
     @Override
     public boolean isAccountValid(String account) {
@@ -192,5 +164,31 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     @Override
     public LoaderManager getLoaderManager() {
         return loaderManager;
+    }
+
+
+    @Override
+    public void getContacts() {
+        loginView.showProgress();
+        requestTask(TaskId.CONTACTS, true, new ApiServiceTask<ContactsBean>() {
+
+            @Override
+            public Call<ContactsBean> run(ApiService apiService) {
+                return apiService.getContacts();
+            }
+
+            @Override
+            public void onLoadSuccess(ContactsBean data) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(data.toString());
+                LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());
+            }
+
+            @Override
+            public void onLoadFail(String errorMsg) {
+                loginView.hideProgress();
+                loginView.showLoginMessage(errorMsg);
+            }
+        });
     }
 }

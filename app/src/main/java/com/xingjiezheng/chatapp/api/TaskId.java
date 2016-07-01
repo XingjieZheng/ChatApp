@@ -10,5 +10,5 @@ public interface TaskId {
 
     int LOGIN_WITH_COOKIE = 2;
 
-    int GET_MY_PROFILE = 3;
+    int CONTACTS = 3;
 }
