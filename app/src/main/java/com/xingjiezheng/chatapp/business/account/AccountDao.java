@@ -41,7 +41,7 @@ public class AccountDao implements AccountTable {
     public void saveLoginAccount(Account account) {
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_ID + "=?", new String[]{account.getAccount()}, null, null, null);
+            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_USER_ID + "=?", new String[]{account.getUserId()}, null, null, null);
             int id = -1;
             if (cursor.moveToNext() && cursor.getCount() >= 0) {
                 id = cursor.getInt(cursor.getColumnIndex(_ID));
@@ -132,8 +132,6 @@ public class AccountDao implements AccountTable {
 
     private void addAccountCookieList(List<Cookie> cookieList, String userId) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ACCOUNT_ID, "");
-        contentValues.put(ACCOUNT_PWD, "");
         contentValues.put(ACCOUNT_USER_ID, userId);
         contentValues.put(ACCOUNT_COOKIE, CookieManager.getInstance().getCookieListJson(cookieList));
         contentValues.put(ACCOUNT_LOGIN_TIME, (int) (System.currentTimeMillis() / 1000));
@@ -143,6 +141,7 @@ public class AccountDao implements AccountTable {
     private void updateAccountCookieList(List<Cookie> cookieList, int id) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ACCOUNT_COOKIE, CookieManager.getInstance().getCookieListJson(cookieList));
+        contentValues.put(ACCOUNT_LOGIN_TIME, (int) (System.currentTimeMillis() / 1000));
         db.update(TABLE_NAME, contentValues, _ID + "= ?", new String[]{String.valueOf(id)});
     }
 

@@ -76,10 +76,12 @@ public class AccountManager {
                 && Global.loginAccount.getUserId() != null
                 && Global.loginAccount.getUserId().equals(userId)) {
             if (!token.equals(CookieManager.getInstance().getCookieToken(Global.loginAccount.getCookieList()))) {
+                //same account but not same cookie
                 Global.loginAccount.setCookieList(cookieList);
                 AccountDao.getInstance().saveLoginAccountCookie(userId, cookieList);
             }
         } else {
+            //different account
             Global.loginAccount = new Account(userId);
             Global.loginAccount.setCookieList(cookieList);
             AccountDao.getInstance().saveLoginAccountCookie(userId, cookieList);

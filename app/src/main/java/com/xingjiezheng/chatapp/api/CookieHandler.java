@@ -37,6 +37,11 @@ public class CookieHandler implements CookieJar {
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
+        String urlString = url.url().toString();
+        if (urlString != null && urlString.contains("account/login.do")) {
+            return new ArrayList<>(0);
+        }
+
         List<Cookie> cookieList = CookieManager.getInstance().getCookieList();
         if (cookieList == null) {
             cookieList = new ArrayList<>(0);
