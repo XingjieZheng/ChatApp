@@ -1,10 +1,8 @@
 package com.xingjiezheng.chatapp.business.account;
 
-import com.xingjiezheng.chatapp.api.CookieManager;
+import com.xingjiezheng.chatapp.business.cookie.CookieManager;
 import com.xingjiezheng.chatapp.business.Global;
-import com.xingjiezheng.chatapp.db.DbManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Cookie;

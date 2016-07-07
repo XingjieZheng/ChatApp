@@ -1,5 +1,6 @@
 package com.xingjiezheng.chatapp.business.account.login;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.xingjiezheng.chatapp.framework.BasePresenter;
@@ -31,6 +32,9 @@ public interface LoginContract {
         void requestPasswordEditView();
 
         void showLoginMessage(String message);
+
+        void gotoActivityAndFinishMyself(Class<? extends Activity> activityClass);
+
     }
 
     interface Presenter extends BasePresenter {

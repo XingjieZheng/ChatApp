@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
+import com.xingjiezheng.chatapp.business.MainActivity;
 import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
 import com.xingjiezheng.chatapp.business.contacts.ContactsBean;
@@ -96,15 +97,16 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             }
 
             @Override
-            public void onLoadSuccess(AccountLoginBean data) {
+            public void onLoadSuccess(@NonNull AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data != null) {
-                    if (data.isStatusSuccess()) {
-                        Account appAccount = new Account(data.getUser().getUserId());
-                        appAccount.setAccount(accountName);
-                        appAccount.setPassword(password);
-                        AccountManager.getInstance().saveLoginAccountInfo(appAccount);
-                    }
+                if (data.isStatusSuccess()) {
+                    Account appAccount = new Account(data.getUser().getUserId());
+                    appAccount.setAccount(accountName);
+                    appAccount.setPassword(password);
+                    AccountManager.getInstance().saveLoginAccountInfo(appAccount);
+                    //jump activity
+                    loginView.gotoActivityAndFinishMyself(MainActivity.class);
+                } else {
                     loginView.showLoginMessage(data.getMsg());
                 }
             }
@@ -178,7 +180,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             }
 
             @Override
-            public void onLoadSuccess(ContactsBean data) {
+            public void onLoadSuccess(@NonNull ContactsBean data) {
                 loginView.hideProgress();
                 loginView.showLoginMessage(data.toString());
                 LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());

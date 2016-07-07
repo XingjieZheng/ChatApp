@@ -2,7 +2,9 @@ package com.xingjiezheng.chatapp.business.account.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -188,6 +190,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @Override
     public void showLoginMessage(String message) {
         SnackbarUtils.show(mAccountView, message);
+    }
+
+    @Override
+    public void gotoActivityAndFinishMyself(Class<? extends Activity> activityClass) {
+        startActivity(new Intent(this, activityClass));
+        finish();
     }
 
     @Override

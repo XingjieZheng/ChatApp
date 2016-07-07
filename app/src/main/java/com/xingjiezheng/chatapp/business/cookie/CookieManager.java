@@ -1,10 +1,8 @@
-package com.xingjiezheng.chatapp.api;
+package com.xingjiezheng.chatapp.business.cookie;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xingjiezheng.chatapp.business.account.AccountDao;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
-import com.xingjiezheng.chatapp.util.LogUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

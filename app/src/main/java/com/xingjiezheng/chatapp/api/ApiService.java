@@ -17,9 +17,10 @@ import retrofit2.http.POST;
 public interface ApiService {
 
     String serverUrlTest = "http://10.10.152.212:8080/";
+    String loginApi = "account/login.do";
 
     @FormUrlEncoded
-    @POST("account/login.do")
+    @POST(loginApi)
     Call<AccountLoginBean> login(@Field("mobile") String account, @Field("password") String password);
 
 

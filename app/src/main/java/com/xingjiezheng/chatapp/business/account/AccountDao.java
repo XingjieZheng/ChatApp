@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.xingjiezheng.chatapp.api.CookieManager;
+import com.xingjiezheng.chatapp.business.cookie.CookieManager;
 import com.xingjiezheng.chatapp.db.DbManager;
 import com.xingjiezheng.chatapp.db.table.AccountTable;
 

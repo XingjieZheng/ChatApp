@@ -91,7 +91,7 @@ public abstract class BaseTaskExecutor {
     public abstract class ApiServiceTask<T> {
         public abstract Call<T> run(ApiService apiService);
 
-        public abstract void onLoadSuccess(T data);
+        public abstract void onLoadSuccess(@NonNull T data);
 
         public abstract void onLoadFail(String errorMsg);
     }

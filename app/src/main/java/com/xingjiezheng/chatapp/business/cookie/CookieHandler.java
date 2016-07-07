@@ -1,5 +1,6 @@
-package com.xingjiezheng.chatapp.api;
+package com.xingjiezheng.chatapp.business.cookie;
 
+import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
 import java.util.ArrayList;
@@ -37,17 +38,20 @@ public class CookieHandler implements CookieJar {
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
-        String urlString = url.url().toString();
-        if (urlString != null && urlString.contains("account/login.do")) {
+        String urlString = url.url().getFile();
+        if (urlString != null && urlString.contains(ApiService.loginApi)) {
+            //login
             return new ArrayList<>(0);
+        } else {
+            //request with cookie
+            List<Cookie> cookieList = CookieManager.getInstance().getCookieList();
+            if (cookieList == null) {
+                //todo local cookie list is null, need to re login
+                cookieList = new ArrayList<>(0);
+            }
+            printCookieList("request", cookieList);
+            return cookieList;
         }
-
-        List<Cookie> cookieList = CookieManager.getInstance().getCookieList();
-        if (cookieList == null) {
-            cookieList = new ArrayList<>(0);
-        }
-        printCookieList("request", cookieList);
-        return cookieList;
     }
 
     private void printCookieList(String from, List<Cookie> cookieList) {

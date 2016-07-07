@@ -29,16 +29,11 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
         this.isWithCookie = isWithCookie;
     }
 
-
     @Override
     public T loadInBackground() {
         T result = null;
         ApiService apiService;
-//        if (isWithCookie) {
-//            apiService = RetrofitUtils.getApiServiceWithCookie();
-//        } else {
-            apiService = RetrofitUtils.getApiServiceWithoutCookie();
-//        }
+        apiService = RetrofitUtils.getApiService();
         Call<T> call = run(apiService);
         try {
             Response<T> response = call.execute();
@@ -47,9 +42,9 @@ public abstract class BaseTaskLoader<T> extends AsyncTaskLoader<T> {
                 if (result != null) {
                     Gson gson = new Gson();
                     String responsePrint = gson.toJson(result);
-                String headersPrint = gson.toJson(response.headers());
+                    String headersPrint = gson.toJson(response.headers());
                     LogUtils.LOGI(TAG, "url:" + call.request().url()
-                        + "\nheaders:" + headersPrint
+                            + "\nheaders:" + headersPrint
                             + "\nresponse:" + responsePrint);
                 } else {
                     LogUtils.LOGI(TAG, mTaskId + " response is null");
