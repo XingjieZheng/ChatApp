@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
-import com.xingjiezheng.chatapp.business.MainActivity;
+import com.xingjiezheng.chatapp.business.main.MainActivity;
 import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
 import com.xingjiezheng.chatapp.business.contacts.ContactsBean;
