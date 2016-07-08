@@ -131,11 +131,6 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     }
 
     @Override
-    public void start() {
-
-    }
-
-    @Override
     public Context getContext() {
         return context;
     }

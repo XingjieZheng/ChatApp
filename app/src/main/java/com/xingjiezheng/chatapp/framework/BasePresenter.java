@@ -6,6 +6,6 @@ package com.xingjiezheng.chatapp.framework;
  */
 public interface BasePresenter {
 
-    void start();
+//    void start();
 
 }

@@ -52,6 +52,5 @@
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/toolbar"
-        android:background="#44779944" />
+        android:layout_above="@id/toolbar" />
 </RelativeLayout>

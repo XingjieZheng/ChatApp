@@ -2,6 +2,8 @@ package com.xingjiezheng.chatapp.business.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +15,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.business.Global;
+import com.xingjiezheng.chatapp.business.contacts.ContactsFragment;
 import com.xingjiezheng.chatapp.glide.GlideCircleTransform;
-import com.xingjiezheng.chatapp.glide.GlideRoundTransform;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,6 +38,11 @@ public class MainActivity extends AppCompatActivity
     private TextView txtUserId;
     private ImageView imgAvatar;
 
+    private int position;
+    private static final int POSITION_MESSAG = 1;
+    private static final int POSITION_CONTACTS = 2;
+    private ContactsFragment contactsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity
         initDrawer();
         setListener();
         refreshDrawer();
+        handleFragment();
     }
 
     private void init() {
@@ -72,6 +80,10 @@ public class MainActivity extends AppCompatActivity
         txtUserId.setText(Global.loginAccount.getUser().getUserId());
         Glide.with(this).load(Global.loginAccount.getUser().getAvatar()).transform(new GlideCircleTransform(this)).into(imgAvatar);
         Glide.with(this).load(Global.loginAccount.getUser().getAvatar()).transform(new GlideCircleTransform(this)).into(imgToolBarAvatar);
+    }
+
+    private void handleFragment() {
+        goToContactsFragment();
     }
 
     @Override
@@ -109,12 +121,12 @@ public class MainActivity extends AppCompatActivity
 
     @OnClick(R.id.txtMessage)
     void clickMessageButton() {
-
+        goToMessageFragment();
     }
 
     @OnClick(R.id.txtContacts)
     void clickContactsButton() {
-
+        goToContactsFragment();
     }
 
     @OnClick(R.id.imgToolBarAvatar)
@@ -123,4 +135,37 @@ public class MainActivity extends AppCompatActivity
             drawer.openDrawer(GravityCompat.START);
         }
     }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void showFragment(int position, Fragment fragment) {
+        if (this.position != position) {
+            this.position = position;
+            replaceFragment(fragment);
+        }
+    }
+
+    private Fragment getMessageFragment() {
+        return null;
+    }
+
+    private void goToMessageFragment() {
+//        showFragment(POSITION_MESSAG, );
+    }
+
+    private Fragment getContactsFragment() {
+        if (contactsFragment == null) {
+            contactsFragment = new ContactsFragment();
+        }
+        return contactsFragment;
+    }
+
+    private void goToContactsFragment() {
+        showFragment(POSITION_CONTACTS, getContactsFragment());
+    }
+
 }
