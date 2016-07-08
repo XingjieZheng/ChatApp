@@ -103,6 +103,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
                     Account appAccount = new Account(data.getUser().getUserId());
                     appAccount.setAccount(accountName);
                     appAccount.setPassword(password);
+                    appAccount.setUser(data.getUser());
                     AccountManager.getInstance().saveLoginAccountInfo(appAccount);
                     //jump activity
                     loginView.gotoActivityAndFinishMyself(MainActivity.class);
@@ -118,30 +119,6 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             }
         });
     }
-
-//    private void loginWithCookie() {
-//        loginView.showProgress();
-//        requestTask(TaskId.LOGIN_WITH_COOKIE, true, new ApiServiceTask<AccountLoginBean>() {
-//
-//            @Override
-//            public Call<AccountLoginBean> run(ApiService apiService) {
-//                return apiService.cookieLogin();
-//            }
-//
-//            @Override
-//            public void onLoadSuccess(Loader<AccountLoginBean> loader, AccountLoginBean data) {
-//                loginView.hideProgress();
-//                loginView.showLoginMessage(data.toString());
-//                LogUtils.LOGI(TAG, loader.getId() + " " + data.toString() + " " + System.currentTimeMillis());
-//            }
-//
-//            @Override
-//            public void onLoadFail(String errorMsg) {
-//                loginView.hideProgress();
-//                loginView.showLoginMessage(errorMsg);
-//            }
-//        });
-//    }
 
     @Override
     public boolean isAccountValid(String account) {

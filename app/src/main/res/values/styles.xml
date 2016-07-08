@@ -17,4 +17,106 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Text"></style>
+
+    <style name="Text.Small" parent="Text">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Normal" parent="Text">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Text.Big" parent="Text">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.Bigger" parent="Text">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Text.Small.White" parent="Text.Small">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Text.Small.Light" parent="Text.Small">
+        <item name="android:textColor">@color/colorLight</item>
+    </style>
+
+    <style name="Text.Small.Gray" parent="Text.Small">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="Text.Small.Normal" parent="Text.Small">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="Text.Small.Bold" parent="Text.Small">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Normal.White" parent="Text.Normal">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Text.Normal.Light" parent="Text.Normal">
+        <item name="android:textColor">@color/colorLight</item>
+    </style>
+
+    <style name="Text.Normal.Gray" parent="Text.Normal">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="Text.Normal.Normal" parent="Text.Normal">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="Text.Normal.Bold" parent="Text.Normal">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Big.White" parent="Text.Big">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Text.Big.Light" parent="Text.Big">
+        <item name="android:textColor">@color/colorLight</item>
+    </style>
+
+    <style name="Text.Big.Gray" parent="Text.Big">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="Text.Big.Normal" parent="Text.Big">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="Text.Big.Bold" parent="Text.Big">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Bigger.White" parent="Text.Bigger">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Text.Bigger.Light" parent="Text.Bigger">
+        <item name="android:textColor">@color/colorLight</item>
+    </style>
+
+    <style name="Text.Bigger.Gray" parent="Text.Bigger">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="Text.Bigger.Normal" parent="Text.Bigger">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="Text.Bigger.Bold" parent="Text.Bigger">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

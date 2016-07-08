@@ -16,6 +16,7 @@ public class Account {
     private String password;
     private boolean isSavePassword;
     private List<Cookie> cookieList;
+    private User user;
 
     public Account(String userId) {
         this.userId = userId;
@@ -55,5 +56,13 @@ public class Account {
 
     public void setCookieList(List<Cookie> cookieList) {
         this.cookieList = cookieList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
