@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.business.Global;
 import com.xingjiezheng.chatapp.business.contacts.ContactsFragment;
+import com.xingjiezheng.chatapp.business.message.list.MessageFragment;
 import com.xingjiezheng.chatapp.glide.GlideCircleTransform;
 
 import butterknife.Bind;
@@ -39,9 +40,10 @@ public class MainActivity extends AppCompatActivity
     private ImageView imgAvatar;
 
     private int position;
-    private static final int POSITION_MESSAG = 1;
+    private static final int POSITION_MESSAGE = 1;
     private static final int POSITION_CONTACTS = 2;
     private ContactsFragment contactsFragment;
+    private MessageFragment messageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void handleFragment() {
-        goToContactsFragment();
+        goToMessageFragment();
     }
 
     @Override
@@ -149,12 +151,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private Fragment getMessageFragment() {
-        return null;
-    }
 
     private void goToMessageFragment() {
-//        showFragment(POSITION_MESSAG, );
+        showFragment(POSITION_MESSAGE, getMessageFragment());
+    }
+
+    private void goToContactsFragment() {
+        showFragment(POSITION_CONTACTS, getContactsFragment());
+    }
+
+    private Fragment getMessageFragment() {
+        if (messageFragment == null) {
+            messageFragment = new MessageFragment();
+        }
+        return messageFragment;
     }
 
     private Fragment getContactsFragment() {
@@ -164,8 +174,5 @@ public class MainActivity extends AppCompatActivity
         return contactsFragment;
     }
 
-    private void goToContactsFragment() {
-        showFragment(POSITION_CONTACTS, getContactsFragment());
-    }
 
 }

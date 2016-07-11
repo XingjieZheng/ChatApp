@@ -59,8 +59,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         init();
         setListeners();
 
-        // TODO: 2016/5/16
+        // TODO: 2016/5/16 ---
         setTestParams();
+        loginPresenter.login();
+        // TODO: 2016/5/16 ---
 
     }
 

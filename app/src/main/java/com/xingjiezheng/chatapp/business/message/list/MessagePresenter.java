@@ -1,4 +1,4 @@
-package com.xingjiezheng.chatapp.business.contacts;
+package com.xingjiezheng.chatapp.business.message.list;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -15,17 +15,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by XingjieZheng
- * on 2016/7/8.
+ * on 2016/7/11.
  */
-public class ContactsPresenter extends BaseTaskExecutor implements ContactsContract.Presenter {
+public class MessagePresenter extends BaseTaskExecutor implements MessageContract.Presenter {
 
-    private static final String TAG = ContactsPresenter.class.getSimpleName();
+    private static final String TAG = MessagePresenter.class.getSimpleName();
 
-    private ContactsContract.View contractView;
+    private MessageContract.View contractView;
     private LoaderManager loaderManager;
     private Context context;
 
-    public ContactsPresenter(@NonNull ContactsContract.View contractView, @NonNull LoaderManager loaderManager) {
+    public MessagePresenter(@NonNull MessageContract.View contractView, @NonNull LoaderManager loaderManager) {
         this.contractView = checkNotNull(contractView, "contractView cannot be null!");
         this.loaderManager = checkNotNull(loaderManager, "loaderManager cannot be null");
         this.context = contractView.getContext();
@@ -44,17 +44,17 @@ public class ContactsPresenter extends BaseTaskExecutor implements ContactsContr
     @Override
     public void getContacts() {
         contractView.showProgress();
-        requestTask(TaskId.CONTACTS, true, new ApiServiceTask<ContactsListBean>() {
+        requestTask(TaskId.MESSAGE, true, new ApiServiceTask<MessageListBean>() {
 
             @Override
-            public Call<ContactsListBean> run(ApiService apiService) {
-                return apiService.getContacts();
+            public Call<MessageListBean> run(ApiService apiService) {
+                return apiService.getMessage();
             }
 
             @Override
-            public void onLoadSuccess(@NonNull ContactsListBean data) {
+            public void onLoadSuccess(@NonNull MessageListBean data) {
                 contractView.hideProgress();
-                contractView.setData(data.getUserArrayList());
+                contractView.setData(data.getMessageArrayList());
                 LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());
             }
 

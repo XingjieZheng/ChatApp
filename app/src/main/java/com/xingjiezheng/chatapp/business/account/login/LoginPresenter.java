@@ -11,7 +11,7 @@ import com.xingjiezheng.chatapp.api.TaskId;
 import com.xingjiezheng.chatapp.business.main.MainActivity;
 import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
-import com.xingjiezheng.chatapp.business.contacts.ContactsBean;
+import com.xingjiezheng.chatapp.business.contacts.ContactsListBean;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
@@ -144,15 +144,15 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     @Override
     public void getContacts() {
         loginView.showProgress();
-        requestTask(TaskId.CONTACTS, true, new ApiServiceTask<ContactsBean>() {
+        requestTask(TaskId.CONTACTS, true, new ApiServiceTask<ContactsListBean>() {
 
             @Override
-            public Call<ContactsBean> run(ApiService apiService) {
+            public Call<ContactsListBean> run(ApiService apiService) {
                 return apiService.getContacts();
             }
 
             @Override
-            public void onLoadSuccess(@NonNull ContactsBean data) {
+            public void onLoadSuccess(@NonNull ContactsListBean data) {
                 loginView.hideProgress();
                 loginView.showLoginMessage(data.toString());
                 LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());

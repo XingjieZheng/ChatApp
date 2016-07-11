@@ -11,4 +11,6 @@ public interface TaskId {
     int LOGIN_WITH_COOKIE = 2;
 
     int CONTACTS = 3;
+
+    int MESSAGE = 4;
 }

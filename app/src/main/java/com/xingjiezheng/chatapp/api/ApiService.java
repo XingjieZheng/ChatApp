@@ -1,9 +1,8 @@
 package com.xingjiezheng.chatapp.api;
 
 import com.xingjiezheng.chatapp.business.account.login.AccountLoginBean;
-import com.xingjiezheng.chatapp.business.contacts.ContactsBean;
-
-import java.net.InetAddress;
+import com.xingjiezheng.chatapp.business.contacts.ContactsListBean;
+import com.xingjiezheng.chatapp.business.message.list.MessageListBean;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -16,7 +15,7 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
 
-    String serverUrlTest = "http://10.10.152.212:8080/";
+    String serverUrlTest = "http://10.10.152.67:8080/";
     String loginApi = "account/login.do";
 
     @FormUrlEncoded
@@ -29,7 +28,8 @@ public interface ApiService {
 
 
     @POST("contacts/getContacts.do")
-    Call<ContactsBean> getContacts();
+    Call<ContactsListBean> getContacts();
 
-
+    @POST("message/getMessage.do")
+    Call<MessageListBean> getMessage();
 }

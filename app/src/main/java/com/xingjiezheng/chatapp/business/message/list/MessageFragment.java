@@ -1,4 +1,4 @@
-package com.xingjiezheng.chatapp.business.contacts;
+package com.xingjiezheng.chatapp.business.message.list;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,23 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xingjiezheng.chatapp.R;
-import com.xingjiezheng.chatapp.business.account.User;
-import com.xingjiezheng.chatapp.business.contacts.ContactsRecyclerViewAdapter.OnListFragmentInteractionListener;
+import com.xingjiezheng.chatapp.business.message.Message;
 import com.xingjiezheng.chatapp.framework.BaseFragment;
 import com.xingjiezheng.chatapp.util.SnackbarUtils;
 
 import java.util.List;
 
-public class ContactsFragment extends BaseFragment implements OnListFragmentInteractionListener, ContactsContract.View {
+public class MessageFragment extends BaseFragment implements MessageRecyclerViewAdapter.OnListFragmentInteractionListener, MessageContract.View {
 
     private RecyclerView recyclerView;
-    private ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
-    private ContactsContract.Presenter presenter;
+    private MessageRecyclerViewAdapter contactsRecyclerViewAdapter;
+    private MessageContract.Presenter presenter;
     private Activity activity;
 
     private boolean isNeedRefresh;
 
-    public ContactsFragment() {
+    public MessageFragment() {
         init();
     }
 
@@ -43,7 +42,7 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
 
         Context context = view.getContext();
         if (context instanceof Activity) {
@@ -57,10 +56,10 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
         }
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this, activity);
+        contactsRecyclerViewAdapter = new MessageRecyclerViewAdapter(this, activity);
         recyclerView.setAdapter(contactsRecyclerViewAdapter);
 
-        presenter = new ContactsPresenter(this, activity.getLoaderManager());
+        presenter = new MessagePresenter(this, activity.getLoaderManager());
         return view;
     }
 
@@ -93,8 +92,8 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
 
 
     @Override
-    public void onListFragmentInteraction(User item, int position) {
-        showMessage("select item (" + position + ") " + item.getUserName());
+    public void onListFragmentInteraction(Message item, int position) {
+        showMessage("select item (" + position + ") " + item.getUser().getUserName());
         // TODO: 2016/7/8
     }
 
@@ -116,14 +115,14 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
     }
 
     @Override
-    public void setData(List<User> userList) {
-        if (userList != null && activity != null && isAdded()) {
-            contactsRecyclerViewAdapter.setData(userList);
+    public void setData(List<Message> list) {
+        if (list != null && activity != null && isAdded()) {
+            contactsRecyclerViewAdapter.setData(list);
         }
     }
 
     @Override
-    public void setPresenter(ContactsContract.Presenter presenter) {
+    public void setPresenter(MessageContract.Presenter presenter) {
         this.presenter = presenter;
     }
 }
