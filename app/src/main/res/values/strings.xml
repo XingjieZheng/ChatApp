@@ -24,7 +24,10 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_main">MainActivity</string>
 
-
+    <!-- Strings related to main -->
     <string name="message">message</string>
     <string name="contacts">contacts</string>
+
+    <!-- Strings related to conversation -->
+    <string name="send">send</string>
 </resources>

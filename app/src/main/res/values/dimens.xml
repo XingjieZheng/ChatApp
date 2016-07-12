@@ -13,4 +13,6 @@
 
     <dimen name="list_avatar_width">44dp</dimen>
     <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="list_txt_padding">8dp</dimen>
+    <dimen name="list_conversation_item_margin">64dp</dimen>
 </resources>

@@ -16,7 +16,7 @@ public class TimeUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         if (isSameDate(timeMillis, getCurrentTimeMillis())) {
-            return calendar.get(Calendar.HOUR) + ":"
+            return calendar.get(Calendar.HOUR_OF_DAY) + ":"
                     + calendar.get(Calendar.MINUTE);
         } else {
             return calendar.get(Calendar.YEAR) + "."

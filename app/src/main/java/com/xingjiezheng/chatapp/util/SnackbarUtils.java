@@ -28,7 +28,7 @@ public class SnackbarUtils {
         if (parent != null && !TextUtils.isEmpty(message)) {
             Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_SHORT);
             try {
-                //修改背景
+                //modify background
                 Field field = Snackbar.class.getDeclaredField("mView");
                 field.setAccessible(true);
                 Snackbar.SnackbarLayout view = (Snackbar.SnackbarLayout) field.get(snackbar);

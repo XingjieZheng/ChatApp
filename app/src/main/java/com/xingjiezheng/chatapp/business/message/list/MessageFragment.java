@@ -2,6 +2,7 @@ package com.xingjiezheng.chatapp.business.message.list;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.business.message.Message;
+import com.xingjiezheng.chatapp.business.message.conversation.ConversationActivity;
+import com.xingjiezheng.chatapp.constants.Extras;
 import com.xingjiezheng.chatapp.framework.BaseFragment;
 import com.xingjiezheng.chatapp.util.SnackbarUtils;
 
@@ -77,11 +80,7 @@ public class MessageFragment extends BaseFragment implements MessageRecyclerView
         if (context instanceof Activity) {
             activity = (Activity) context;
         } else {
-            try {
-                throw new Exception("Error, contacts fragment must attach to a activiyt!");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException("please pass an activity first to use this call");
         }
     }
 
@@ -93,8 +92,12 @@ public class MessageFragment extends BaseFragment implements MessageRecyclerView
 
     @Override
     public void onListFragmentInteraction(Message item, int position) {
-        showMessage("select item (" + position + ") " + item.getUser().getUserName());
-        // TODO: 2016/7/8
+        if (item != null && item.getUser() != null && item.getUser().getUserId() != null) {
+            Activity activity = getActivity();
+            Intent intent = new Intent(activity, ConversationActivity.class);
+            intent.putExtra(Extras.EXTRA_USER_ID, item.getUser().getUserId());
+            activity.startActivity(intent);
+        }
     }
 
     @Override
@@ -125,4 +128,5 @@ public class MessageFragment extends BaseFragment implements MessageRecyclerView
     public void setPresenter(MessageContract.Presenter presenter) {
         this.presenter = presenter;
     }
+
 }

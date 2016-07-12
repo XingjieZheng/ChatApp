@@ -13,4 +13,6 @@ public interface TaskId {
     int CONTACTS = 3;
 
     int MESSAGE = 4;
+
+    int CONVERSATION = 5;
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/list_conversation_item_margin"
+    android:layout_marginRight="@dimen/list_conversation_item_margin"
+    android:background="#f2f2f2"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/txtTime"
+        style="@style/Text.Small.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:singleLine="true"
+        tools:text="2016.07.11" />
+
+    <TextView
+        android:id="@+id/txtName"
+        style="@style/Text.Normal.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_toLeftOf="@id/txtTime"
+        android:singleLine="true"
+        tools:text="Strider" />
+
+    <TextView
+        android:id="@+id/txtContent"
+        style="@style/Text.Big.Normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtName"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_marginTop="@dimen/list_txt_padding"
+        android:lineSpacingExtra="4dp"
+        tools:text="Hi, beauty!Hbea!Hi, beauty!Hbea!Hi, beauty!Hbea!Hi, beauty!Hbea!Hi, beauty!Hbea!" />
+
+</RelativeLayout>

@@ -2,6 +2,8 @@ package com.xingjiezheng.chatapp.api;
 
 import com.xingjiezheng.chatapp.business.account.login.AccountLoginBean;
 import com.xingjiezheng.chatapp.business.contacts.ContactsListBean;
+import com.xingjiezheng.chatapp.business.message.conversation.ConversationBean;
+import com.xingjiezheng.chatapp.business.message.conversation.ConversationContract;
 import com.xingjiezheng.chatapp.business.message.list.MessageListBean;
 
 import retrofit2.Call;
@@ -32,4 +34,8 @@ public interface ApiService {
 
     @POST("message/getMessage.do")
     Call<MessageListBean> getMessage();
+
+    @FormUrlEncoded
+    @POST("message/getConversation.do")
+    Call<ConversationBean> getConversation(@Field("theOtherUserId") String theOtherUserId);
 }
