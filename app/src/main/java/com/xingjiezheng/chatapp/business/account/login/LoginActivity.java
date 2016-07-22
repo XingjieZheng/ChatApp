@@ -57,13 +57,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
         // TODO: 2016/5/16 ---
         setTestParams();
-        loginPresenter.login();
+//        loginPresenter.login();
         // TODO: 2016/5/16 ---
 
     }
 
     private void setTestParams() {
-        mAccountView.setText("13713709078");
+        mAccountView.setText("13713700001");
         mPasswordView.setText("123456");
     }
 
