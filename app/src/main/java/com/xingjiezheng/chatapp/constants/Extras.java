@@ -6,4 +6,7 @@ package com.xingjiezheng.chatapp.constants;
  */
 public interface Extras {
     String EXTRA_USER_ID = "EXTRA_USER_ID";
+    String EXTRA_SENDER_USER_ID = "EXTRA_SENDER_USER_ID";
+    String EXTRA_RECEIVER_USER_ID = "EXTRA_RECEIVER_USER_ID";
+    String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 }

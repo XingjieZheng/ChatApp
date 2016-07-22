@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +26,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A login screen that offers login via email/password.
@@ -205,9 +201,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         loginPresenter = presenter;
     }
 
-    @OnClick(R.id.get_contacts_button)
-    public void getContacts() {
-        loginPresenter.getContacts();
-    }
 }
 

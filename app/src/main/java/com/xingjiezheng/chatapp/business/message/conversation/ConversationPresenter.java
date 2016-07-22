@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
+import com.xingjiezheng.chatapp.business.Global;
 import com.xingjiezheng.chatapp.business.message.list.MessageListBean;
+import com.xingjiezheng.chatapp.communication.CommunicationService;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
@@ -25,6 +27,8 @@ public class ConversationPresenter extends BaseTaskExecutor implements Conversat
     private ConversationContract.View contractView;
     private LoaderManager loaderManager;
     private Context context;
+
+    private ConversationBean conversationBean;
 
     public ConversationPresenter(@NonNull ConversationContract.View contractView, @NonNull LoaderManager loaderManager) {
         this.contractView = checkNotNull(contractView, "contractView cannot be null!");
@@ -55,6 +59,7 @@ public class ConversationPresenter extends BaseTaskExecutor implements Conversat
             @Override
             public void onLoadSuccess(@NonNull ConversationBean data) {
                 contractView.hideProgress();
+                conversationBean = data;
                 contractView.setData(data.getMessageArrayList());
                 LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());
             }
@@ -65,6 +70,11 @@ public class ConversationPresenter extends BaseTaskExecutor implements Conversat
                 contractView.showMessage(errorMsg);
             }
         });
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        CommunicationService.startActionSend(context, Global.loginAccount.getUserId(), contractView.getTheOtherUserId(), message);
     }
 
 }

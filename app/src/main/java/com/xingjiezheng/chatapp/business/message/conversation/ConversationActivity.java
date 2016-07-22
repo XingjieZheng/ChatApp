@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,12 +19,11 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ConversationActivity extends BaseActivity implements ConversationContract.View,
         ConversationRecyclerViewAdapter.OnListFragmentInteractionListener {
 
-    @Bind(R.id.btnSend)
-    Button btnSend;
     @Bind(R.id.edtInput)
     EditText edtInput;
     @Bind(R.id.recyclerView)
@@ -95,5 +95,14 @@ public class ConversationActivity extends BaseActivity implements ConversationCo
     @Override
     public void onListFragmentInteraction(Message item, int position) {
 
+    }
+
+    @OnClick(R.id.btnSend)
+    void clickBtnSend() {
+        String context = edtInput.getText().toString();
+        if (TextUtils.isEmpty(context)) {
+            return;
+        }
+        presenter.sendMessage(context);
     }
 }

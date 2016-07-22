@@ -8,10 +8,11 @@ import android.text.TextUtils;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.api.ApiService;
 import com.xingjiezheng.chatapp.api.TaskId;
-import com.xingjiezheng.chatapp.business.main.MainActivity;
 import com.xingjiezheng.chatapp.business.account.Account;
 import com.xingjiezheng.chatapp.business.account.AccountManager;
-import com.xingjiezheng.chatapp.business.contacts.ContactsListBean;
+import com.xingjiezheng.chatapp.business.main.MainActivity;
+import com.xingjiezheng.chatapp.communication.CommunicationManager;
+import com.xingjiezheng.chatapp.communication.CommunicationService;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
@@ -99,7 +100,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             @Override
             public void onLoadSuccess(@NonNull AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data.isStatusSuccess()) {
+                if (data.isStatusSuccess() && data.getUser() != null && data.getUser().getUserId() != null) {
                     Account appAccount = new Account(data.getUser().getUserId());
                     appAccount.setAccount(accountName);
                     appAccount.setPassword(password);
@@ -107,6 +108,8 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
                     AccountManager.getInstance().saveLoginAccountInfo(appAccount);
                     //jump activity
                     loginView.gotoActivityAndFinishMyself(MainActivity.class);
+                    //register web socket
+                    registerCommunicationService(data.getUser().getUserId());
                 } else {
                     loginView.showLoginMessage(data.getMsg());
                 }
@@ -131,6 +134,11 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     }
 
     @Override
+    public void registerCommunicationService(String userId) {
+        CommunicationService.startActionConnect(context, userId);
+    }
+
+    @Override
     public Context getContext() {
         return context;
     }
@@ -140,29 +148,4 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
         return loaderManager;
     }
 
-
-    @Override
-    public void getContacts() {
-        loginView.showProgress();
-        requestTask(TaskId.CONTACTS, true, new ApiServiceTask<ContactsListBean>() {
-
-            @Override
-            public Call<ContactsListBean> run(ApiService apiService) {
-                return apiService.getContacts();
-            }
-
-            @Override
-            public void onLoadSuccess(@NonNull ContactsListBean data) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(data.toString());
-                LogUtils.LOGI(TAG, data.toString() + " " + System.currentTimeMillis());
-            }
-
-            @Override
-            public void onLoadFail(String errorMsg) {
-                loginView.hideProgress();
-                loginView.showLoginMessage(errorMsg);
-            }
-        });
-    }
 }

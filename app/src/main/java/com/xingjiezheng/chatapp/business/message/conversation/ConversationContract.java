@@ -34,5 +34,7 @@ public interface ConversationContract {
 
         void getConversation();
 
+        void sendMessage(String message);
+
     }
 }

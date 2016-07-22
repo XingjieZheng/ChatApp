@@ -37,6 +37,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <service
+            android:name=".communication.CommunicationService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
