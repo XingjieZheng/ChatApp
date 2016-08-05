@@ -131,6 +131,7 @@ public class CommunicationManager {
             LogUtils.LOGE(TAG, e.toString());
             // TODO: 2016/8/3 show message:send message fail
 
+
         }
     }
 
