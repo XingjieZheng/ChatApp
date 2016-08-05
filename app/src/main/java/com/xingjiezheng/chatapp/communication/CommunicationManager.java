@@ -1,17 +1,19 @@
 package com.xingjiezheng.chatapp.communication;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
+import com.xingjiezheng.chatapp.EventBus.EventType;
 import com.xingjiezheng.chatapp.util.LogUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.channels.NotYetConnectedException;
 
 /**
  * Created by XingjieZheng
@@ -21,7 +23,7 @@ public class CommunicationManager {
 
     private static final String TAG = CommunicationManager.class.getSimpleName();
 
-    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.152.67:8080/websocket";
+    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.152.187:8080/websocket";
     private static final String WEB_SOCKET_SECURITY_KEY = "Jekjg8k2eaj3j5fjafj4";
 
     private static CommunicationManager communicationManager;
@@ -30,10 +32,16 @@ public class CommunicationManager {
     private MessageBean messageBeanSend;
     private MessageBean messageBeanReceive;
     private Gson gson;
+    private int connectState;
+    private static final int CONNECT_STATE_UNCONNECTED = 0;
+    private static final int CONNECT_STATE_FAIL = 1;
+    private static final int CONNECT_STATE_SUCCESSFULLY = 2;
+    private static final int CONNECT_STATE_CLOSE = 3;
 
     private CommunicationManager() {
         messageBeanSend = new MessageBean();
         gson = new Gson();
+        setConnectState(CONNECT_STATE_UNCONNECTED);
     }
 
     public static CommunicationManager getInstance() {
@@ -47,7 +55,7 @@ public class CommunicationManager {
         return communicationManager;
     }
 
-    public boolean connect(String userId) {
+    public void connect(String userId) {
         if (webSocketClient != null) {
             webSocketClient = null;
         }
@@ -56,6 +64,7 @@ public class CommunicationManager {
             webSocketClient = new WebSocketClient(new URI(WEB_SOCKET_SERVER_URL), new Draft_17()) {
                 @Override
                 public void onOpen(ServerHandshake serverHandshake) {
+                    setConnectState(CONNECT_STATE_SUCCESSFULLY);
                     LogUtils.LOGI(TAG, "onOpen");
                     sendUserInfo();
                 }
@@ -66,6 +75,7 @@ public class CommunicationManager {
                         messageBeanReceive = gson.fromJson(s, MessageBean.class);
                         if (messageBeanReceive != null && messageBeanReceive.getMessage() != null) {
                             LogUtils.LOGI(TAG, messageBeanReceive.getMessage());
+                            EventBus.getDefault().post(new EventType.ReceiveMessageEvent(messageBeanReceive));
                             // TODO: 2016/7/22
                         }
                     } catch (Exception e) {
@@ -76,6 +86,7 @@ public class CommunicationManager {
                 @Override
                 public void onClose(int i, String s, boolean b) {
                     LogUtils.LOGI(TAG, "onClose():" + i + " " + s + " " + b);
+                    setConnectState(CONNECT_STATE_CLOSE);
                 }
 
                 @Override
@@ -83,13 +94,12 @@ public class CommunicationManager {
                     LogUtils.LOGE(TAG, "onError" + e.toString());
                 }
             };
-            webSocketClient.connect();
-            return true;
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            setConnectState(CONNECT_STATE_FAIL);
             LogUtils.LOGE(TAG, "URISyntaxException " + e.toString());
-            return false;
+            e.printStackTrace();
         }
+        webSocketClient.connect();
     }
 
     private void sendUserInfo() {
@@ -105,17 +115,37 @@ public class CommunicationManager {
             LogUtils.LOGE(TAG, "sendMessage()  Error,param is null!");
             return;
         }
-        boolean isConnectSuccessfully = true;
-        if (webSocketClient == null) {
-            isConnectSuccessfully = connect(senderUserId);
+        if (!isConnectSuccessfully(userId)) {
+            connect(senderUserId);
         }
-        if (isConnectSuccessfully) {
-            messageBeanSend.setReceiverUserId(receiverUserId);
-            messageBeanSend.setSenderUserId(senderUserId);
-            messageBeanSend.setMessage(message);
-            messageBeanSend.setType(MessageBean.TYPE_NORMAL_MESSAGE);
-            webSocketClient.send(gson.toJson(messageBeanSend));
+        messageBeanSend.setReceiverUserId(receiverUserId);
+        messageBeanSend.setSenderUserId(senderUserId);
+        messageBeanSend.setMessage(message);
+        messageBeanSend.setType(MessageBean.TYPE_NORMAL_MESSAGE);
+        String messageJson = gson.toJson(messageBeanSend);
+        LogUtils.LOGI(TAG, "send message:" + messageJson);
+        try {
+            webSocketClient.send(messageJson);
+        } catch (NotYetConnectedException e) {
+            e.printStackTrace();
+            LogUtils.LOGE(TAG, e.toString());
+            // TODO: 2016/8/3 show message:send message fail
         }
+    }
+
+    public void close() {
+        if (webSocketClient != null) {
+            webSocketClient.close();
+        }
+        setConnectState(CONNECT_STATE_UNCONNECTED);
+    }
+
+    private void setConnectState(int state) {
+        this.connectState = state;
+    }
+
+    private boolean isConnectSuccessfully(String userId) {
+        return this.connectState == CONNECT_STATE_SUCCESSFULLY && userId != null && userId.equals(this.userId);
     }
 
 }

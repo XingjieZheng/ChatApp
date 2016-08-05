@@ -17,7 +17,7 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
 
-    String serverUrlTest = "http://10.10.152.67:8080/";
+    String serverUrl = "http://10.10.152.187:8080/";
     String loginApi = "account/login.do";
 
     @FormUrlEncoded

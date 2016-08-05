@@ -1,7 +1,6 @@
-package com.xingjiezheng.chatapp.framework;
+package com.xingjiezheng.chatapp.framework.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;

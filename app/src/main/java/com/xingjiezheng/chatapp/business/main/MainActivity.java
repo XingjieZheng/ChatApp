@@ -17,6 +17,7 @@ import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.business.Global;
 import com.xingjiezheng.chatapp.business.contacts.ContactsFragment;
 import com.xingjiezheng.chatapp.business.message.list.MessageFragment;
+import com.xingjiezheng.chatapp.communication.CommunicationService;
 import com.xingjiezheng.chatapp.glide.GlideCircleTransform;
 
 import butterknife.Bind;
@@ -175,4 +176,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CommunicationService.startActionClose(this);
+    }
 }

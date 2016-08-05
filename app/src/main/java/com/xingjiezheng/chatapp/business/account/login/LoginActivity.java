@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingjiezheng.chatapp.R;
-import com.xingjiezheng.chatapp.framework.BaseActivity;
+import com.xingjiezheng.chatapp.framework.activity.BaseActivity;
 import com.xingjiezheng.chatapp.util.LogUtils;
 import com.xingjiezheng.chatapp.util.SnackbarUtils;
 

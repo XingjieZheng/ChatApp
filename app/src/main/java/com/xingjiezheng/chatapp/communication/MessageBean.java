@@ -1,10 +1,12 @@
 package com.xingjiezheng.chatapp.communication;
 
+import java.io.Serializable;
+
 /**
  * Created by XingjieZheng
  * on 2016/6/17.
  */
-public class MessageBean {
+public class MessageBean implements Serializable{
 
     public static final int TYPE_NORMAL_MESSAGE = 0;
     public static final int TYPE_REGISTER_MESSAGE = 1;
@@ -13,6 +15,16 @@ public class MessageBean {
     private String receiverUserId;
     private String message;
     private String securityKey;
+    private int type;
+    private long time;
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public String getMessage() {
         return message;
@@ -29,8 +41,6 @@ public class MessageBean {
     public void setType(int type) {
         this.type = type;
     }
-
-    private int type;
 
     public String getSecurityKey() {
         return securityKey;

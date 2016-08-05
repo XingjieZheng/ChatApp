@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.xingjiezheng.chatapp.constants.Extras;
-import com.xingjiezheng.chatapp.util.LogUtils;
 
 /**
  * Created by XingjieZheng
@@ -38,10 +37,9 @@ public class CommunicationService extends IntentService {
         context.startService(intent);
     }
 
-    public static void startActionClose(Context context, String userId) {
+    public static void startActionClose(Context context) {
         Intent intent = new Intent(context, CommunicationService.class);
         intent.setAction(ACTION_CLOSE);
-        intent.putExtra(Extras.EXTRA_USER_ID, userId);
         context.startService(intent);
     }
 
@@ -54,7 +52,6 @@ public class CommunicationService extends IntentService {
                     if (userId != null) {
                         handleActionConnect(userId);
                     }
-                    LogUtils.LOGI(TAG, "onHandleIntent action connect " + userId);
                 }
                 break;
                 case ACTION_SEND: {
@@ -67,10 +64,7 @@ public class CommunicationService extends IntentService {
                 }
                 break;
                 case ACTION_CLOSE: {
-                    String userId = intent.getStringExtra(Extras.EXTRA_USER_ID);
-                    if (userId != null) {
-                        handleActionClose(userId);
-                    }
+                    handleActionClose();
                 }
                 break;
             }
@@ -78,17 +72,14 @@ public class CommunicationService extends IntentService {
     }
 
     private void handleActionConnect(String userId) {
-        // TODO: 2016/7/22
         CommunicationManager.getInstance().connect(userId);
     }
 
     private void handleActionSend(String senderUserId, String receiverUserId, String message) {
-        // TODO: 2016/7/22
         CommunicationManager.getInstance().sendMessage(senderUserId, receiverUserId, message);
     }
 
-    private void handleActionClose(String userId) {
-        // TODO: 2016/7/22
-
+    private void handleActionClose() {
+        CommunicationManager.getInstance().close();
     }
 }

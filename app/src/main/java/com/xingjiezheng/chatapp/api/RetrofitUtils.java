@@ -19,7 +19,7 @@ public class RetrofitUtils {
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             httpClient.cookieJar(new CookieHandler());
             Retrofit commonRetrofit = new Retrofit.Builder()
-                    .baseUrl(ApiService.serverUrlTest)
+                    .baseUrl(ApiService.serverUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
                     .build();

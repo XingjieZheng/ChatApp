@@ -16,7 +16,6 @@ import com.xingjiezheng.chatapp.business.message.Message;
 import com.xingjiezheng.chatapp.glide.GlideCircleTransform;
 import com.xingjiezheng.chatapp.util.TimeUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<ConversationRecyclerViewAdapter.ViewHolder> {
@@ -30,15 +29,10 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
     private static final int TYPE_THE_OTHER = 2;
 
 
-    public ConversationRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context) {
+    public ConversationRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, List<Message> list) {
         mListener = listener;
         this.context = context;
-        mValues = new ArrayList<>(0);
-    }
-
-    public void setData(List<Message> list) {
         mValues = list;
-        notifyDataSetChanged();
     }
 
     @Override
