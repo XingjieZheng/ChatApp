@@ -68,8 +68,8 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
             return TYPE_SYSTEM;
         } else {
             User user = mValues.get(position).getUser();
-            if (user != null && user.getUserId() != null && Global.loginAccount != null) {
-                if (user.getUserId().equals(Global.loginAccount.getUserId())) {
+            if (user != null && user.getId() != null && Global.loginAccount != null) {
+                if (user.getId().equals(Global.loginAccount.getUserId())) {
                     return TYPE_MYSELF;
                 } else {
                     return TYPE_THE_OTHER;
@@ -89,7 +89,7 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
                     .transform(new GlideCircleTransform(context))
                     .into(holder.imgAvatar);
         }
-        holder.txtName.setText(mValues.get(position).getUser().getUserName());
+        holder.txtName.setText(mValues.get(position).getUser().getNickName());
         holder.txtContent.setText(mValues.get(position).getContent());
         holder.txtTime.setText(TimeUtils.getDateByTimeMillis(mValues.get(position).getTime()));
 

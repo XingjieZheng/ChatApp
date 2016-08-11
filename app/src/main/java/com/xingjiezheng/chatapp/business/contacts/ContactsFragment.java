@@ -2,6 +2,7 @@ package com.xingjiezheng.chatapp.business.contacts;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import com.xingjiezheng.chatapp.R;
 import com.xingjiezheng.chatapp.business.account.User;
 import com.xingjiezheng.chatapp.business.contacts.ContactsRecyclerViewAdapter.OnListFragmentInteractionListener;
+import com.xingjiezheng.chatapp.business.message.conversation.ConversationActivity;
+import com.xingjiezheng.chatapp.constants.Extras;
 import com.xingjiezheng.chatapp.framework.BaseFragment;
 import com.xingjiezheng.chatapp.util.SnackbarUtils;
 
@@ -94,8 +97,12 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
 
     @Override
     public void onListFragmentInteraction(User item, int position) {
-        showMessage("select item (" + position + ") " + item.getUserName());
-        // TODO: 2016/7/8
+        if (item != null && item.getId() != null) {
+            Activity activity = getActivity();
+            Intent intent = new Intent(activity, ConversationActivity.class);
+            intent.putExtra(Extras.EXTRA_USER_ID, item.getId());
+            activity.startActivity(intent);
+        }
     }
 
     @Override

@@ -10,9 +10,9 @@ public class User implements Serializable {
     private static final int GENDER_MALE = 1;
     private static final int GENDER_FEMALE = 2;
 
-    private String userId;
+    private String id;
 
-    private String userName;
+    private String nickName;
 
     private int gender;
 
@@ -22,24 +22,17 @@ public class User implements Serializable {
 
     }
 
-    public User(String userId) {
-        this.userId = userId;
+    public User(String id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+
+    public String getId() {
+        return id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAvatar() {
@@ -64,5 +57,13 @@ public class User implements Serializable {
 
     public boolean isFemale() {
         return GENDER_FEMALE == gender;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshDrawer() {
-        txtName.setText(Global.loginAccount.getUser().getUserName());
-        txtUserId.setText(Global.loginAccount.getUser().getUserId());
+        txtName.setText(Global.loginAccount.getUser().getNickName());
+        txtUserId.setText(Global.loginAccount.getUser().getId());
         Glide.with(this).load(Global.loginAccount.getUser().getAvatar()).transform(new GlideCircleTransform(this)).into(imgAvatar);
         Glide.with(this).load(Global.loginAccount.getUser().getAvatar()).transform(new GlideCircleTransform(this)).into(imgToolBarAvatar);
     }

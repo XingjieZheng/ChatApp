@@ -100,8 +100,8 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             @Override
             public void onLoadSuccess(@NonNull AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data.isStatusSuccess() && data.getUser() != null && data.getUser().getUserId() != null) {
-                    Account appAccount = new Account(data.getUser().getUserId());
+                if (data.isStatusSuccess() && data.getUser() != null && data.getUser().getId() != null) {
+                    Account appAccount = new Account(data.getUser().getId());
                     appAccount.setAccount(accountName);
                     appAccount.setPassword(password);
                     appAccount.setUser(data.getUser());
@@ -109,7 +109,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
                     //jump activity
                     loginView.gotoActivityAndFinishMyself(MainActivity.class);
                     //register web socket
-                    registerCommunicationService(data.getUser().getUserId());
+                    registerCommunicationService(data.getUser().getId());
                 } else {
                     loginView.showLoginMessage(data.getMsg());
                 }

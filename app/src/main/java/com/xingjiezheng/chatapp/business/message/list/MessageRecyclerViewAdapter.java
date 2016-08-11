@@ -48,7 +48,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 .load(mValues.get(position).getUser().getAvatar())
                 .transform(new GlideCircleTransform(context))
                 .into(holder.imgAvatar);
-        holder.txtName.setText(mValues.get(position).getUser().getUserName());
+        holder.txtName.setText(mValues.get(position).getUser().getNickName());
         holder.txtContent.setText(mValues.get(position).getContent());
         holder.txtTime.setText(TimeUtils.getDateByTimeMillis(mValues.get(position).getTime()));
         holder.txtUnReadCount.setText(String.valueOf(mValues.get(position).getUnReadCount()));

@@ -47,7 +47,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
                 .load(mValues.get(position).getAvatar())
                 .transform(new GlideCircleTransform(context))
                 .into(holder.imgAvatar);
-        holder.txtName.setText(mValues.get(position).getUserName());
+        holder.txtName.setText(mValues.get(position).getNickName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
