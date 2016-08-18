@@ -4,7 +4,10 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xingjiezheng.chatapp.EventBus.EventType;
+import com.xingjiezheng.chatapp.business.account.User;
+import com.xingjiezheng.chatapp.business.message.Message;
 import com.xingjiezheng.chatapp.util.LogUtils;
+import com.xingjiezheng.chatapp.util.UserUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.client.WebSocketClient;
@@ -23,14 +26,16 @@ public class CommunicationManager {
 
     private static final String TAG = CommunicationManager.class.getSimpleName();
 
-    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.152.187:8080/websocket";
+    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.152.187:8081/websocket";
     private static final String WEB_SOCKET_SECURITY_KEY = "Jekjg8k2eaj3j5fjafj4";
 
     private static CommunicationManager communicationManager;
     private WebSocketClient webSocketClient;
-    private String userId;
-    private MessageBean messageBeanSend;
-    private MessageBean messageBeanReceive;
+    private int userId;
+    private Message messageSend;
+    private Message messageReceive;
+    private CommunicationMessageBean communicationMessageBeanSend;
+    private CommunicationMessageBean communicationMessageBeanReceive;
     private Gson gson;
     private int connectState;
     private static final int CONNECT_STATE_UNCONNECTED = 0;
@@ -39,7 +44,8 @@ public class CommunicationManager {
     private static final int CONNECT_STATE_CLOSE = 3;
 
     private CommunicationManager() {
-        messageBeanSend = new MessageBean();
+        messageSend = new Message();
+        communicationMessageBeanSend = new CommunicationMessageBean();
         gson = new Gson();
         setConnectState(CONNECT_STATE_UNCONNECTED);
     }
@@ -55,7 +61,7 @@ public class CommunicationManager {
         return communicationManager;
     }
 
-    public void connect(String userId) {
+    public void connect(int userId) {
         if (webSocketClient != null) {
             webSocketClient = null;
         }
@@ -72,14 +78,14 @@ public class CommunicationManager {
                 @Override
                 public void onMessage(final String s) {
                     try {
-                        messageBeanReceive = gson.fromJson(s, MessageBean.class);
-                        if (messageBeanReceive != null && messageBeanReceive.getMessage() != null) {
-                            LogUtils.LOGI(TAG, messageBeanReceive.getMessage());
-                            EventBus.getDefault().post(new EventType.ReceiveMessageEvent(messageBeanReceive));
+                        communicationMessageBeanReceive = gson.fromJson(s, CommunicationMessageBean.class);
+                        if (communicationMessageBeanReceive != null && communicationMessageBeanReceive.getMessage() != null) {
+                            LogUtils.LOGI(TAG, communicationMessageBeanReceive.getMessage().toString());
+                            EventBus.getDefault().post(new EventType.ReceiveMessageEvent(communicationMessageBeanReceive));
                             // TODO: 2016/7/22
                         }
                     } catch (Exception e) {
-                        LogUtils.LOGE(TAG, "Error: " + s);
+                        LogUtils.LOGI(TAG, "onMessage(): " + s);
                     }
                 }
 
@@ -103,26 +109,27 @@ public class CommunicationManager {
     }
 
     private void sendUserInfo() {
-        messageBeanSend.setType(MessageBean.TYPE_REGISTER_MESSAGE);
-        messageBeanSend.setMessage("");
-        messageBeanSend.setSenderUserId(userId);
-        messageBeanSend.setSecurityKey(WEB_SOCKET_SECURITY_KEY);
-        webSocketClient.send(gson.toJson(messageBeanSend));
+        messageSend.setSender(new User(userId));
+        communicationMessageBeanSend.setType(CommunicationMessageBean.TYPE_REGISTER_MESSAGE);
+        communicationMessageBeanSend.setMessage(messageSend);
+        communicationMessageBeanSend.setSecurityKey(WEB_SOCKET_SECURITY_KEY);
+        webSocketClient.send(gson.toJson(communicationMessageBeanSend));
     }
 
-    public void sendMessage(String senderUserId, String receiverUserId, String message) {
-        if (TextUtils.isEmpty(message) || TextUtils.isEmpty(senderUserId) || TextUtils.isEmpty(receiverUserId)) {
+    public void sendMessage(int senderUserId, int receiverUserId, String message) {
+        if (TextUtils.isEmpty(message) || !UserUtils.isUserIdValid(senderUserId) || !UserUtils.isUserIdValid(receiverUserId)) {
             LogUtils.LOGE(TAG, "sendMessage()  Error,param is null!");
             return;
         }
         if (!isConnectSuccessfully(userId)) {
             connect(senderUserId);
         }
-        messageBeanSend.setReceiverUserId(receiverUserId);
-        messageBeanSend.setSenderUserId(senderUserId);
-        messageBeanSend.setMessage(message);
-        messageBeanSend.setType(MessageBean.TYPE_NORMAL_MESSAGE);
-        String messageJson = gson.toJson(messageBeanSend);
+        messageSend.setContent(message);
+        messageSend.setSender(new User(senderUserId));
+        messageSend.setReceiver(new User(receiverUserId));
+        communicationMessageBeanSend.setMessage(messageSend);
+        communicationMessageBeanSend.setType(CommunicationMessageBean.TYPE_NORMAL_MESSAGE);
+        String messageJson = gson.toJson(communicationMessageBeanSend);
         LogUtils.LOGI(TAG, "send message:" + messageJson);
         try {
             webSocketClient.send(messageJson);
@@ -144,8 +151,8 @@ public class CommunicationManager {
         this.connectState = state;
     }
 
-    private boolean isConnectSuccessfully(String userId) {
-        return this.connectState == CONNECT_STATE_SUCCESSFULLY && userId != null && userId.equals(this.userId);
+    private boolean isConnectSuccessfully(int userId) {
+        return this.connectState == CONNECT_STATE_SUCCESSFULLY && UserUtils.isUserIdValid(userId) && userId == this.userId;
     }
 
 }

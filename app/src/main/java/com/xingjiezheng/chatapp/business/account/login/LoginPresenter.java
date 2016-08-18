@@ -15,6 +15,7 @@ import com.xingjiezheng.chatapp.communication.CommunicationManager;
 import com.xingjiezheng.chatapp.communication.CommunicationService;
 import com.xingjiezheng.chatapp.framework.BaseTaskExecutor;
 import com.xingjiezheng.chatapp.util.LogUtils;
+import com.xingjiezheng.chatapp.util.UserUtils;
 
 import retrofit2.Call;
 
@@ -100,7 +101,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
             @Override
             public void onLoadSuccess(@NonNull AccountLoginBean data) {
                 loginView.hideProgress();
-                if (data.isStatusSuccess() && data.getUser() != null && data.getUser().getId() != null) {
+                if (data.isStatusSuccess() && data.getUser() != null && UserUtils.isUserIdValid(data.getUser().getId())) {
                     Account appAccount = new Account(data.getUser().getId());
                     appAccount.setAccount(accountName);
                     appAccount.setPassword(password);
@@ -134,7 +135,7 @@ public class LoginPresenter extends BaseTaskExecutor implements LoginContract.Pr
     }
 
     @Override
-    public void registerCommunicationService(String userId) {
+    public void registerCommunicationService(int userId) {
         CommunicationService.startActionConnect(context, userId);
     }
 

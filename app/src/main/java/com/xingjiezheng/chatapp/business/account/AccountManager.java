@@ -2,6 +2,7 @@ package com.xingjiezheng.chatapp.business.account;
 
 import com.xingjiezheng.chatapp.business.cookie.CookieManager;
 import com.xingjiezheng.chatapp.business.Global;
+import com.xingjiezheng.chatapp.util.UserUtils;
 
 import java.util.List;
 
@@ -48,13 +49,13 @@ public class AccountManager {
     }
 
     public void saveLoginAccountInfo(Account account) {
-        if (account == null || account.getUserId() == null) {
+        if (account == null || !account.isUserIdValid()) {
             return;
         }
         List<Cookie> cookieArrayList = null;
         if (Global.loginAccount != null
-                && Global.loginAccount.getUserId() != null
-                && Global.loginAccount.getUserId().equals(account.getUserId())
+                && Global.loginAccount.isUserIdValid()
+                && Global.loginAccount.getUserId() == account.getUserId()
                 && Global.loginAccount.getCookieList() != null
                 && Global.loginAccount.getCookieList().size() > 0) {
             cookieArrayList = Global.loginAccount.getCookieList();
@@ -66,13 +67,13 @@ public class AccountManager {
         saveLoginAccountInSql(account);
     }
 
-    public void saveLoginAccountCookieList(String userId, String token, List<Cookie> cookieList) {
-        if (userId == null || token == null || cookieList == null || cookieList.size() == 0) {
+    public void saveLoginAccountCookieList(int userId, String token, List<Cookie> cookieList) {
+        if (!UserUtils.isUserIdValid(userId) || token == null || cookieList == null || cookieList.size() == 0) {
             return;
         }
         if (Global.loginAccount != null
-                && Global.loginAccount.getUserId() != null
-                && Global.loginAccount.getUserId().equals(userId)) {
+                && Global.loginAccount.isUserIdValid()
+                && Global.loginAccount.getUserId() == userId) {
             if (!token.equals(CookieManager.getInstance().getCookieToken(Global.loginAccount.getCookieList()))) {
                 //same account but not same cookie
                 Global.loginAccount.setCookieList(cookieList);

@@ -92,10 +92,10 @@ public class MessageFragment extends BaseFragment implements MessageRecyclerView
 
     @Override
     public void onListFragmentInteraction(Message item, int position) {
-        if (item != null && item.getUser() != null && item.getUser().getId() != null) {
+        if (item != null && item.getSender() != null && item.getSender().isIdValid()) {
             Activity activity = getActivity();
             Intent intent = new Intent(activity, ConversationActivity.class);
-            intent.putExtra(Extras.EXTRA_USER_ID, item.getUser().getId());
+            intent.putExtra(Extras.EXTRA_USER_ID, item.getSender().getId());
             activity.startActivity(intent);
         }
     }

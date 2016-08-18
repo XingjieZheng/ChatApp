@@ -97,7 +97,7 @@ public class ContactsFragment extends BaseFragment implements OnListFragmentInte
 
     @Override
     public void onListFragmentInteraction(User item, int position) {
-        if (item != null && item.getId() != null) {
+        if (item != null && item.isIdValid()) {
             Activity activity = getActivity();
             Intent intent = new Intent(activity, ConversationActivity.class);
             intent.putExtra(Extras.EXTRA_USER_ID, item.getId());

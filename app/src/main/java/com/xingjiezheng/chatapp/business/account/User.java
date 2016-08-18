@@ -1,5 +1,7 @@
 package com.xingjiezheng.chatapp.business.account;
 
+import com.xingjiezheng.chatapp.util.UserUtils;
+
 import java.io.Serializable;
 
 /**
@@ -10,11 +12,11 @@ public class User implements Serializable {
     private static final int GENDER_MALE = 1;
     private static final int GENDER_FEMALE = 2;
 
-    private String id;
+    private int id = -1;
 
     private String nickName;
 
-    private int gender;
+    private int gender = -1;
 
     private String avatar;
 
@@ -22,16 +24,16 @@ public class User implements Serializable {
 
     }
 
-    public User(String id) {
+    public User(int id) {
         this.id = id;
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -65,5 +67,9 @@ public class User implements Serializable {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public boolean isIdValid() {
+        return UserUtils.isUserIdValid(id);
     }
 }

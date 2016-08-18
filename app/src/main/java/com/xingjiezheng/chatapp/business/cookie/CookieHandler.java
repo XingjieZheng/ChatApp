@@ -30,7 +30,16 @@ public class CookieHandler implements CookieJar {
             if (userId == null || token == null) {
                 LogUtils.LOGE("saveFromResponse()", "Error, userId or token is null!");
             } else {
-                CookieManager.getInstance().saveCookieList(cookies, userId, token);
+                int id = -1;
+                try {
+                    id = Integer.valueOf(userId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (id != -1) {
+                        CookieManager.getInstance().saveCookieList(cookies, id, token);
+                    }
+                }
             }
         }
         printCookieList("response", cookies);

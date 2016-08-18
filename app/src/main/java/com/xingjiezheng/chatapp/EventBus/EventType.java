@@ -1,6 +1,6 @@
 package com.xingjiezheng.chatapp.EventBus;
 
-import com.xingjiezheng.chatapp.communication.MessageBean;
+import com.xingjiezheng.chatapp.communication.CommunicationMessageBean;
 
 /**
  * Created by XingjieZheng
@@ -9,14 +9,14 @@ import com.xingjiezheng.chatapp.communication.MessageBean;
 public class EventType {
 
     public static class ReceiveMessageEvent {
-        private MessageBean messageBean;
+        private CommunicationMessageBean communicationMessageBean;
 
-        public ReceiveMessageEvent(MessageBean messageBean) {
-            this.messageBean = messageBean;
+        public ReceiveMessageEvent(CommunicationMessageBean communicationMessageBean) {
+            this.communicationMessageBean = communicationMessageBean;
         }
 
-        public MessageBean getMessageBean() {
-            return messageBean;
+        public CommunicationMessageBean getCommunicationMessageBean() {
+            return communicationMessageBean;
         }
     }
 }

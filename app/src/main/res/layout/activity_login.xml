@@ -42,8 +42,7 @@
                     android:hint="@string/prompt_account"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="13713709078" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -61,8 +60,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="844733477" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 

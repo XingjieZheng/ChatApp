@@ -45,7 +45,7 @@ public interface LoginContract {
 
         boolean isPasswordValid(String password);
 
-        void registerCommunicationService(String userId);
+        void registerCommunicationService(int userId);
 
     }
 }

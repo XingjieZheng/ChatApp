@@ -53,7 +53,7 @@ public class ConversationPresenter extends BaseTaskExecutor implements Conversat
 
             @Override
             public Call<ConversationBean> run(ApiService apiService) {
-                return apiService.getConversation(contractView.getTheOtherUserId());
+                return apiService.getConversation(String.valueOf(contractView.getTheOtherUserId()));
             }
 
             @Override

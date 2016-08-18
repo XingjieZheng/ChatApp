@@ -43,7 +43,7 @@ public class CookieManager {
         return AccountManager.getInstance().getLoginAccount().getCookieList();
     }
 
-    public void saveCookieList(List<Cookie> cookieList, String userId, String token) {
+    public void saveCookieList(List<Cookie> cookieList, int userId, String token) {
 
         AccountManager.getInstance().saveLoginAccountCookieList(userId, token, cookieList);
 

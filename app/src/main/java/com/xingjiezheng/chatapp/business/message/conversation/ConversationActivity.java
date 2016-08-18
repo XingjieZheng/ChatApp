@@ -9,12 +9,13 @@ import android.widget.EditText;
 
 import com.xingjiezheng.chatapp.EventBus.EventType;
 import com.xingjiezheng.chatapp.R;
-import com.xingjiezheng.chatapp.business.account.User;
+import com.xingjiezheng.chatapp.business.Global;
 import com.xingjiezheng.chatapp.business.message.Message;
-import com.xingjiezheng.chatapp.communication.MessageBean;
+import com.xingjiezheng.chatapp.communication.CommunicationMessageBean;
 import com.xingjiezheng.chatapp.constants.Extras;
 import com.xingjiezheng.chatapp.framework.activity.BaseHandlerActivity;
 import com.xingjiezheng.chatapp.util.LogUtils;
+import com.xingjiezheng.chatapp.util.UserUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,8 +39,7 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
 
     private ConversationContract.Presenter presenter;
     private ConversationRecyclerViewAdapter adapter;
-    private String theOtherUserId;
-
+    private int theOtherUserId;
     private List<Message> list;
 
     private static final int HANDLER_RECEIVE_MESSAGE = 1;
@@ -61,8 +61,8 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
     private void init() {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        theOtherUserId = getIntent().getStringExtra(Extras.EXTRA_USER_ID);
-        if (theOtherUserId == null) {
+        theOtherUserId = getIntent().getIntExtra(Extras.EXTRA_USER_ID, 0);
+        if (!UserUtils.isUserIdValid(theOtherUserId)) {
             throw new RuntimeException("Error, param 'theOtherUserId' is null!");
         }
         list = new ArrayList<>();
@@ -103,7 +103,7 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
     }
 
     @Override
-    public String getTheOtherUserId() {
+    public int getTheOtherUserId() {
         return theOtherUserId;
     }
 
@@ -124,19 +124,27 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
             return;
         }
         presenter.sendMessage(context);
+        edtInput.setText("");
+        Message message = new Message();
+        message.setContent(context);
+        message.setSender(Global.loginAccount.getUser());
+        list.add(message);
+        adapter.notifyDataSetChanged();
     }
 
     @Subscribe
     public void onEvent(EventType.ReceiveMessageEvent event) {
-        if (theOtherUserId == null || event.getMessageBean() == null || !theOtherUserId.equals(event.getMessageBean().getReceiverUserId())) {
+        if (!UserUtils.isUserIdValid(theOtherUserId)
+                || event.getCommunicationMessageBean() == null
+                || theOtherUserId != (event.getCommunicationMessageBean().getMessage().getSender().getId())) {
             return;
         }
         android.os.Message handlerMessage = handler.obtainMessage(HANDLER_RECEIVE_MESSAGE);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Extras.EXTRA_DATA, event.getMessageBean());
+        bundle.putSerializable(Extras.EXTRA_DATA, event.getCommunicationMessageBean());
         handlerMessage.setData(bundle);
         handler.sendMessage(handlerMessage);
-        LogUtils.LOGI(TAG, event.getMessageBean().getMessage());
+        LogUtils.LOGI(TAG, event.getCommunicationMessageBean().getMessage().toString());
     }
 
     @Override
@@ -146,14 +154,14 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
                 if (msg.getData() == null) {
                     return false;
                 }
-                MessageBean messageBean = (MessageBean) msg.getData().getSerializable(Extras.EXTRA_DATA);
-                if (messageBean == null) {
+                CommunicationMessageBean communicationMessageBean = (CommunicationMessageBean) msg.getData().getSerializable(Extras.EXTRA_DATA);
+                if (communicationMessageBean == null) {
                     return false;
                 }
                 Message message = new Message();
-                message.setContent(messageBean.getMessage());
-                message.setTime(messageBean.getTime());
-                message.setUser(new User(messageBean.getSenderUserId()));
+                message.setContent(communicationMessageBean.getMessage().getContent());
+                message.setTime(communicationMessageBean.getMessage().getTime());
+                message.setSender(communicationMessageBean.getMessage().getSender());
                 list.add(message);
                 adapter.notifyDataSetChanged();
                 return true;

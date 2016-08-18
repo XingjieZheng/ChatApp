@@ -26,7 +26,7 @@ public interface ConversationContract {
 
         void setData(List<Message> list);
 
-        String getTheOtherUserId();
+        int getTheOtherUserId();
 
     }
 

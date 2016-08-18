@@ -1,5 +1,7 @@
 package com.xingjiezheng.chatapp.business.account;
 
+import com.xingjiezheng.chatapp.util.UserUtils;
+
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -11,18 +13,18 @@ import okhttp3.Cookie;
 public class Account {
 
     private static final String TAG = Account.class.getSimpleName();
-    private final String userId;
+    private final int userId;
     private String account;
     private String password;
     private boolean isSavePassword;
     private List<Cookie> cookieList;
     private User user;
 
-    public Account(String userId) {
+    public Account(int userId) {
         this.userId = userId;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -64,5 +66,9 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isUserIdValid() {
+        return UserUtils.isUserIdValid(userId);
     }
 }

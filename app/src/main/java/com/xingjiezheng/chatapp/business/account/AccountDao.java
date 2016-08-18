@@ -41,7 +41,7 @@ public class AccountDao implements AccountTable {
     public void saveLoginAccount(Account account) {
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_USER_ID + "=?", new String[]{account.getUserId()}, null, null, null);
+            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_USER_ID + "=?", new String[]{String.valueOf(account.getUserId())}, null, null, null);
             int id = -1;
             if (cursor.moveToNext() && cursor.getCount() >= 0) {
                 id = cursor.getInt(cursor.getColumnIndex(_ID));
@@ -87,7 +87,7 @@ public class AccountDao implements AccountTable {
             cursor = db.query(TABLE_NAME, null, null, null, null, null, ACCOUNT_LOGIN_TIME, "1");
 
             if (cursor.moveToNext() && cursor.getCount() >= 0) {
-                account = new Account(cursor.getString(cursor.getColumnIndex(ACCOUNT_USER_ID)));
+                account = new Account(cursor.getInt(cursor.getColumnIndex(ACCOUNT_USER_ID)));
                 account.setAccount(cursor.getString(cursor.getColumnIndex(ACCOUNT_ID)));
                 account.setPassword(cursor.getString(cursor.getColumnIndex(ACCOUNT_PWD)));
                 String cookieListJson = cursor.getString(cursor.getColumnIndex(ACCOUNT_COOKIE));
@@ -108,10 +108,10 @@ public class AccountDao implements AccountTable {
         return account;
     }
 
-    public void saveLoginAccountCookie(String userId, List<Cookie> cookieList) {
+    public void saveLoginAccountCookie(int userId, List<Cookie> cookieList) {
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_USER_ID + "=?", new String[]{userId}, null, null, null);
+            cursor = db.query(TABLE_NAME, new String[]{_ID}, ACCOUNT_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
             int id = -1;
             if (cursor.moveToNext() && cursor.getCount() >= 0) {
                 id = cursor.getInt(cursor.getColumnIndex(_ID));
@@ -130,7 +130,7 @@ public class AccountDao implements AccountTable {
         }
     }
 
-    private void addAccountCookieList(List<Cookie> cookieList, String userId) {
+    private void addAccountCookieList(List<Cookie> cookieList, int userId) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ACCOUNT_USER_ID, userId);
         contentValues.put(ACCOUNT_COOKIE, CookieManager.getInstance().getCookieListJson(cookieList));

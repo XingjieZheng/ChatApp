@@ -67,9 +67,9 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
         if (mValues == null || mValues.size() == 0) {
             return TYPE_SYSTEM;
         } else {
-            User user = mValues.get(position).getUser();
-            if (user != null && user.getId() != null && Global.loginAccount != null) {
-                if (user.getId().equals(Global.loginAccount.getUserId())) {
+            User user = mValues.get(position).getSender();
+            if (user != null && user.isIdValid() && Global.loginAccount != null) {
+                if (user.getId() == (Global.loginAccount.getUserId())) {
                     return TYPE_MYSELF;
                 } else {
                     return TYPE_THE_OTHER;
@@ -85,13 +85,13 @@ public class ConversationRecyclerViewAdapter extends RecyclerView.Adapter<Conver
         holder.mItem = mValues.get(position);
         if (holder.imgAvatar != null) {
             Glide.with(context)
-                    .load(mValues.get(position).getUser().getAvatar())
+                    .load(mValues.get(position).getSender().getAvatar())
                     .transform(new GlideCircleTransform(context))
                     .into(holder.imgAvatar);
         }
-        holder.txtName.setText(mValues.get(position).getUser().getNickName());
+        holder.txtName.setText(mValues.get(position).getSender().getNickName());
         holder.txtContent.setText(mValues.get(position).getContent());
-        holder.txtTime.setText(TimeUtils.getDateByTimeMillis(mValues.get(position).getTime()));
+        holder.txtTime.setText(mValues.get(position).getTime() == null ? null : mValues.get(position).getTime().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

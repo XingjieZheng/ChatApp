@@ -45,12 +45,12 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Glide.with(context)
-                .load(mValues.get(position).getUser().getAvatar())
+                .load(mValues.get(position).getSender().getAvatar())
                 .transform(new GlideCircleTransform(context))
                 .into(holder.imgAvatar);
-        holder.txtName.setText(mValues.get(position).getUser().getNickName());
+        holder.txtName.setText(mValues.get(position).getSender().getNickName());
         holder.txtContent.setText(mValues.get(position).getContent());
-        holder.txtTime.setText(TimeUtils.getDateByTimeMillis(mValues.get(position).getTime()));
+        holder.txtTime.setText(mValues.get(position).getTime().toString());
         holder.txtUnReadCount.setText(String.valueOf(mValues.get(position).getUnReadCount()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
