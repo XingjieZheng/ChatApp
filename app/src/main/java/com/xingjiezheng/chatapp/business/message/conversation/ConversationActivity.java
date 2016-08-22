@@ -97,7 +97,9 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
     @Override
     public void setData(List<Message> list) {
         if (list != null) {
-            this.list.addAll(list);
+            for (int size = list.size() - 1, i = size; i >= 0; i--) {
+                this.list.add(list.get(i));
+            }
             adapter.notifyDataSetChanged();
         }
     }
