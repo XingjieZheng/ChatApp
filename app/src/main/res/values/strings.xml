@@ -27,7 +27,13 @@
     <!-- Strings related to main -->
     <string name="message">message</string>
     <string name="contacts">contacts</string>
+    <string name="add_contacts">Add contacts</string>
 
     <!-- Strings related to conversation -->
     <string name="send">send</string>
+
+    <!-- Strings related to contacts -->
+    <string name="hint_input_user_id">input user id</string>
+    <string name="search">search</string>
+
 </resources>

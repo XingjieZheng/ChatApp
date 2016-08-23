@@ -40,7 +40,9 @@
 
         <service
             android:name=".communication.CommunicationService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".business.contacts.add.AddContactsActivity"></activity>
     </application>
 
 </manifest>

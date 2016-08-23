@@ -15,4 +15,8 @@ public interface TaskId {
     int MESSAGE = 4;
 
     int CONVERSATION = 5;
+
+    int ADD_CONTACTS = 6;
+
+    int SEARCH_USER = 7;
 }
