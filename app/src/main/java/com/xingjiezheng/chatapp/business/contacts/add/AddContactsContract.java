@@ -26,11 +26,15 @@ public interface AddContactsContract {
 
         void showMessage(String message);
 
+        void hideSearchResultLayout();
+
     }
 
     interface Presenter extends BasePresenter {
 
         void search(String userId);
+
+        void addContacts(int userId);
 
     }
 }

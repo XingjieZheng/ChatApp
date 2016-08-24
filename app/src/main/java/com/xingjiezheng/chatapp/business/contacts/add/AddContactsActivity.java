@@ -4,13 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xingjiezheng.chatapp.R;
-import com.xingjiezheng.chatapp.business.contacts.ContactsPresenter;
+import com.xingjiezheng.chatapp.business.account.User;
 import com.xingjiezheng.chatapp.framework.activity.BaseActivity;
+import com.xingjiezheng.chatapp.glide.GlideCircleTransform;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,10 +22,20 @@ public class AddContactsActivity extends BaseActivity implements AddContactsCont
 
     @Bind(R.id.edit_input)
     EditText editInput;
-    @Bind(R.id.txt_search_result)
-    TextView txtSearchResult;
+    @Bind(R.id.layout_result)
+    View layoutResult;
+    @Bind(R.id.img_Avatar)
+    ImageView imgAvatar;
+    @Bind(R.id.txt_Name)
+    TextView txtName;
+    @Bind(R.id.txt_result_empty)
+    TextView txtResultEmpty;
+    @Bind(R.id.layout_result_no_empty)
+    View layoutResultNoEmpty;
 
     private AddContactsContract.Presenter presenter;
+
+    private User searchUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,16 @@ public class AddContactsActivity extends BaseActivity implements AddContactsCont
 
     }
 
+    @OnClick(R.id.btn_add)
+    void onClickAddContacts() {
+
+        if (searchUser != null) {
+            presenter.addContacts(searchUser.getId());
+        }
+
+    }
+
+
     @Override
     public Context getContext() {
         return this;
@@ -65,12 +87,20 @@ public class AddContactsActivity extends BaseActivity implements AddContactsCont
         if (searchUserBean == null) {
             return;
         }
-        txtSearchResult.setVisibility(View.VISIBLE);
+        layoutResult.setVisibility(View.VISIBLE);
         if (searchUserBean.getUser() == null) {
-            txtSearchResult.setText(searchUserBean.getMsg());
+            txtResultEmpty.setVisibility(View.VISIBLE);
+            layoutResultNoEmpty.setVisibility(View.GONE);
+            txtResultEmpty.setText(searchUserBean.getMsg());
         } else {
-            // TODO: 2016/8/23
-            txtSearchResult.setText(searchUserBean.getUser().getNickName());
+            txtResultEmpty.setVisibility(View.GONE);
+            layoutResultNoEmpty.setVisibility(View.VISIBLE);
+            searchUser = searchUserBean.getUser();
+            txtName.setText(searchUser.getNickName());
+            Glide.with(this)
+                    .load(searchUser.getAvatar())
+                    .transform(new GlideCircleTransform(this))
+                    .into(imgAvatar);
         }
 
     }
@@ -78,6 +108,11 @@ public class AddContactsActivity extends BaseActivity implements AddContactsCont
     @Override
     public void showMessage(String message) {
         showToast(message);
+    }
+
+    @Override
+    public void hideSearchResultLayout() {
+        layoutResult.setVisibility(View.GONE);
     }
 
     @Override

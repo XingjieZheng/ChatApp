@@ -71,4 +71,32 @@ public class AddContactsPresenter extends BaseTaskExecutor implements AddContact
             }
         });
     }
+
+    @Override
+    public void addContacts(int userId) {
+        contractView.showProgress();
+        this.userId = String.valueOf(userId);
+        requestTask(TaskId.ADD_CONTACTS, true, new ApiServiceTask<BaseBean>() {
+
+            @Override
+            public Call<BaseBean> run(ApiService apiService) {
+                return apiService.requestBecomeContacts(AddContactsPresenter.this.userId);
+            }
+
+            @Override
+            public void onLoadSuccess(@NonNull BaseBean data) {
+                contractView.hideProgress();
+                if (data.isStatusSuccess()) {
+                    contractView.hideSearchResultLayout();
+                }
+                contractView.showMessage(data.getMsg());
+            }
+
+            @Override
+            public void onLoadFail(String errorMsg) {
+                contractView.hideProgress();
+                contractView.showMessage(errorMsg);
+            }
+        });
+    }
 }
