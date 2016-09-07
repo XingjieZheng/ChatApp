@@ -3,7 +3,7 @@ package com.xingjiezheng.chatapp.framework;
 import android.app.Application;
 
 import com.xingjiezheng.chatapp.business.Global;
-import com.xingjiezheng.chatapp.db.DBManager;
+import com.xingjiezheng.chatapp.db.DbManager;
 
 /**
  * Created by XingjieZheng
@@ -15,6 +15,6 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Global.getInstance(getApplicationContext());
-        DBManager.getInstance(getApplicationContext());
+        DbManager.getInstance(getApplicationContext());
     }
 }

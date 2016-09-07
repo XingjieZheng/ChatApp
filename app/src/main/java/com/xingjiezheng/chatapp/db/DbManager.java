@@ -7,22 +7,22 @@ import android.content.Context;
  * Created by XingjieZheng
  * on 2016/9/6.
  */
-public class DBManager {
+public class DbManager {
     private final static String dbName = "chat_app_db";
-    private static DBManager mInstance;
+    private static DbManager mInstance;
     private Context context;
     public static final boolean ENCRYPTED = true;
 
 
-    private DBManager(Context context) {
+    private DbManager(Context context) {
         this.context = context;
     }
 
-    public static DBManager getInstance(Context context) {
+    public static DbManager getInstance(Context context) {
         if (mInstance == null) {
-            synchronized (DBManager.class) {
+            synchronized (DbManager.class) {
                 if (mInstance == null) {
-                    mInstance = new DBManager(context);
+                    mInstance = new DbManager(context);
 
                 }
             }
