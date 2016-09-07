@@ -1,61 +1,32 @@
 package com.xingjiezheng.chatapp.db;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 
-import com.xingjiezheng.chatapp.business.Global;
-import com.xingjiezheng.chatapp.util.LogUtils;
+import android.content.Context;
 
 /**
  * Created by XingjieZheng
- * on 2016/5/26.
+ * on 2016/9/6.
  */
-public class DbManager {
+public class DBManager {
+    private final static String dbName = "chat_app_db";
+    private static DBManager mInstance;
+    private Context context;
+    public static final boolean ENCRYPTED = true;
 
-    private static final String TAG = DbManager.class.getSimpleName();
 
-
-    private static DbManager dbManager;
-    private SQLiteDatabase sqLiteDatabase;
-    private DbHelper dbHelper;
-
-    private DbManager(Context context) {
-        if (sqLiteDatabase != null && sqLiteDatabase.isOpen()) {
-            return;
-        }
-        try {
-            if (dbHelper == null) {
-                dbHelper = new DbHelper(context);
-            }
-            sqLiteDatabase = dbHelper.getWritableDatabase();
-        } catch (SQLiteException e) {
-            LogUtils.LOGE(TAG, e.getStackTrace().toString());
-        }
-
+    private DBManager(Context context) {
+        this.context = context;
     }
 
-    public synchronized static DbManager getInstance() {
-        if (dbManager == null) {
-            synchronized (DbManager.class) {
-                if (dbManager == null) {
-                    dbManager = new DbManager(Global.appContext);
+    public static DBManager getInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (DBManager.class) {
+                if (mInstance == null) {
+                    mInstance = new DBManager(context);
+
                 }
             }
         }
-        return dbManager;
-    }
-
-    public SQLiteDatabase getSqLiteDatabase() {
-        return sqLiteDatabase;
-    }
-
-    public void close() {
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
-        if (sqLiteDatabase != null) {
-            sqLiteDatabase.close();
-        }
+        return mInstance;
     }
 }
