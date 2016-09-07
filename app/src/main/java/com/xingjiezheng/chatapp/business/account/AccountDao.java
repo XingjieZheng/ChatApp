@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.xingjiezheng.chatapp.business.cookie.CookieManager;
-import com.xingjiezheng.chatapp.db.DbManager;
+import com.xingjiezheng.chatapp.db.DbManagerOld;
 import com.xingjiezheng.chatapp.db.table.AccountTable;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class AccountDao implements AccountTable {
     private SQLiteDatabase db;
 
     private AccountDao() {
-        db = DbManager.getInstance().getSqLiteDatabase();
+        db = DbManagerOld.getInstance().getSqLiteDatabase();
     }
 
     public static AccountDao getInstance() {

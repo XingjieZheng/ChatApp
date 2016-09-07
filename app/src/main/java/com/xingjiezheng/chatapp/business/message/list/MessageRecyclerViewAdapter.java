@@ -50,7 +50,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 .into(holder.imgAvatar);
         holder.txtName.setText(mValues.get(position).getSender().getNickName());
         holder.txtContent.setText(mValues.get(position).getContent());
-        holder.txtTime.setText(mValues.get(position).getTime().toString());
+        holder.txtTime.setText(TimeUtils.getDateByTimeMillis(mValues.get(position).getTime()));
         holder.txtUnReadCount.setText(String.valueOf(mValues.get(position).getUnReadCount()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

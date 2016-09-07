@@ -19,9 +19,9 @@ public class TimeUtils {
             return calendar.get(Calendar.HOUR_OF_DAY) + ":"
                     + calendar.get(Calendar.MINUTE);
         } else {
-            return calendar.get(Calendar.YEAR) + "."
-                    + calendar.get(Calendar.MONTH) + "."
-                    + calendar.get(Calendar.DAY_OF_MONTH);
+            return /*calendar.get(Calendar.YEAR) + "."
+                    + */calendar.get(Calendar.MONTH) + "月"
+                    + calendar.get(Calendar.DAY_OF_MONTH) + "日";
         }
     }
 

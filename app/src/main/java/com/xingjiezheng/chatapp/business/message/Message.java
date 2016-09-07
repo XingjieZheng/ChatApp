@@ -1,22 +1,27 @@
 package com.xingjiezheng.chatapp.business.message;
 
 import com.xingjiezheng.chatapp.business.account.User;
-import com.xingjiezheng.chatapp.framework.BaseToStringInstance;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by XingjieZheng
  * on 2016/7/11.
  */
-public class Message extends BaseToStringInstance implements Serializable {
+//@Entity
+public class Message/* extends BaseToStringInstance */ {
 
-    private String id;
-    private Date time;
+//    @Id(autoincrement = true)
+    private long id;
+//    @NotNull
+    private long time;
+//    @NotNull
     private String content;
     private int unReadCount;
+
+//    @NotNull
+//    @ToOne(joinProperty = "senderId")
     private User sender;
+//    @NotNull
+//    @ToOne(joinProperty = "receiverId")
     private User receiver;
 
     public User getReceiver() {
@@ -35,19 +40,19 @@ public class Message extends BaseToStringInstance implements Serializable {
         this.sender = sender;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

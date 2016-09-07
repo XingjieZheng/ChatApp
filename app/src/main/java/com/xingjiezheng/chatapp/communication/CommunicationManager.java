@@ -26,7 +26,7 @@ public class CommunicationManager {
 
     private static final String TAG = CommunicationManager.class.getSimpleName();
 
-    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.152.187:8081/websocket";
+    private static final String WEB_SOCKET_SERVER_URL = "ws://10.10.124.92:8081/websocket";
     private static final String WEB_SOCKET_SECURITY_KEY = "Jekjg8k2eaj3j5fjafj4";
 
     private static CommunicationManager communicationManager;

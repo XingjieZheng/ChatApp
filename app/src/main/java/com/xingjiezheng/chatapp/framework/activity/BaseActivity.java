@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.xingjiezheng.chatapp.util.SnackbarUtils;
 
@@ -30,5 +32,18 @@ public class BaseActivity extends AppCompatActivity {
 
     protected View getRootView() {
         return getWindow().getDecorView().findViewById(android.R.id.content);
+    }
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean ishideKeyboard() {
+        return getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
     }
 }

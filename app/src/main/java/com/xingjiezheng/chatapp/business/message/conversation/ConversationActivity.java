@@ -97,10 +97,12 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
     @Override
     public void setData(List<Message> list) {
         if (list != null) {
-            for (int size = list.size() - 1, i = size; i >= 0; i--) {
+            int size = list.size() - 1;
+            for (int i = size; i >= 0; i--) {
                 this.list.add(list.get(i));
             }
             adapter.notifyDataSetChanged();
+            listScrollToBottom();
         }
     }
 
@@ -130,8 +132,11 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
         Message message = new Message();
         message.setContent(context);
         message.setSender(Global.loginAccount.getUser());
+        message.setTime(System.currentTimeMillis());
         list.add(message);
         adapter.notifyDataSetChanged();
+        listScrollToBottom();
+        hideKeyboard();
     }
 
     @Subscribe
@@ -166,9 +171,16 @@ public class ConversationActivity extends BaseHandlerActivity implements Convers
                 message.setSender(communicationMessageBean.getMessage().getSender());
                 list.add(message);
                 adapter.notifyDataSetChanged();
+                listScrollToBottom();
                 return true;
         }
         return false;
+    }
+
+    private void listScrollToBottom() {
+        if (list != null) {
+            recyclerView.smoothScrollToPosition(list.size());
+        }
     }
 
 }
